@@ -24,17 +24,14 @@ public class Order {
     @Size(min = 3, max = 255, message = "Description must be between 3 and 255 characters")
     private String description;
 
-    @Column(name = "user_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "status_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "status_id")
     private Status status;
 
-    @Column(name = "staff_processed_order_id")
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "staff_processed_order_id")
     private User staffProcessedOrder;

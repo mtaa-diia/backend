@@ -5,6 +5,7 @@ import jakarta.validation.constraints.Size;
 import org.hibernate.annotations.Type;
 
 import java.util.Date;
+import java.util.Objects;
 
 
 @Entity
@@ -20,21 +21,20 @@ public class Document {
     @Size(min = 3, max = 255, message = "Title must be between 3 and 50 characters")
     private String title;
 
-    @Type(type = "jsonb")
     @Column(columnDefinition = "jsonb")
-    private Object content;
+    @NotEmpty(message = "Content is required")
+    @Size(min = 3, max = 999, message = "Content must be between 3 and 999 characters")
+    private String content;
 
     @Column(name = "description")
     @NotEmpty(message = "Description is required")
     @Size(min = 3, max = 999, message = "Description must be between 3 and 999 characters")
     private String description;
 
-    @Column(name = "user_id")
     @ManyToOne( cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @Column(name = "status_id")
     @ManyToOne( cascade = CascadeType.ALL)
     @JoinColumn(name = "status_id")
     private Status status;
@@ -51,5 +51,99 @@ public class Document {
     public Document() {
     }
 
+    public Document(String title, String content, String description, User user, Status status, Date createdAt, Date updatedAt) {
+        this.title = title;
+        this.content = content;
+        this.description = description;
+        this.user = user;
+        this.status = status;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Date getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Document document)) return false;
+        return Objects.equals(id, document.id) && Objects.equals(title, document.title) && Objects.equals(content, document.content) && Objects.equals(description, document.description) && Objects.equals(user, document.user) && Objects.equals(status, document.status) && Objects.equals(createdAt, document.createdAt) && Objects.equals(updatedAt, document.updatedAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, content, description, user, status, createdAt, updatedAt);
+    }
+
+    @Override
+    public String toString() {
+        return "Document{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                ", status=" + status +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
+    }
 }
