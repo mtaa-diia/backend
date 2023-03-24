@@ -1,7 +1,4 @@
 package com.doklad.api.models;
-import com.doklad.api.utility.enums.StatusEnum;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;

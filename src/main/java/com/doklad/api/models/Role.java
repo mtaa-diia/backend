@@ -1,6 +1,6 @@
 package com.doklad.api.models;
 
-import com.doklad.api.utility.enums.RoleEnum;
+import com.doklad.api.utility.enums.RoleType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
@@ -18,7 +18,7 @@ public class Role {
     @Column(name = "role")
     @Enumerated(EnumType.ORDINAL)
     @NotNull(message = "Role is required")
-    private RoleEnum role;
+    private RoleType role;
 
 
     @Column(name = "created_at")
@@ -36,13 +36,13 @@ public class Role {
     public Role() {
     }
 
-    public Role(RoleEnum role, Date createdAt, Date updatedAt) {
+    public Role(RoleType role, Date createdAt, Date updatedAt) {
         this.role = role;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
     }
 
-    public Role(RoleEnum role) {
+    public Role(RoleType role) {
         this.role = role;
     }
 
@@ -51,11 +51,11 @@ public class Role {
     }
 
 
-    public RoleEnum getRole() {
+    public RoleType getRole() {
         return role;
     }
 
-    public void setRole(RoleEnum role) {
+    public void setRole(RoleType role) {
         this.role = role;
     }
 

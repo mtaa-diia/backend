@@ -1,6 +1,6 @@
 package com.doklad.api.utility.enums;
 
-public enum RoleEnum {
+public enum RoleType {
     ADMIN,
     STAFF,
     USER

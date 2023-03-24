@@ -1,6 +1,6 @@
 package com.doklad.api.utility.enums;
 
-public enum StatusEnum {
+public enum StatusType {
     ACCEPTED,
     DECLINED,
     PENDING

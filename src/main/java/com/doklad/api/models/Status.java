@@ -1,6 +1,6 @@
 package com.doklad.api.models;
 
-import com.doklad.api.utility.enums.StatusEnum;
+import com.doklad.api.utility.enums.StatusType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 
@@ -18,7 +18,7 @@ public class Status {
     @Column(name = "status")
     @Enumerated(EnumType.ORDINAL)
     @NotNull(message = "Status is required")
-    private StatusEnum status;
+    private StatusType status;
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -31,7 +31,7 @@ public class Status {
     public Status() {
     }
 
-    public Status(StatusEnum status, Date createdAt, Date updatedAt) {
+    public Status(StatusType status, Date createdAt, Date updatedAt) {
         this.status = status;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -41,11 +41,11 @@ public class Status {
         return id;
     }
 
-    public StatusEnum getStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
-    public void setStatus(StatusEnum status) {
+    public void setStatus(StatusType status) {
         this.status = status;
     }
 

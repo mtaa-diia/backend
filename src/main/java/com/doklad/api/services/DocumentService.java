@@ -1,15 +1,15 @@
 package com.doklad.api.services;
 
-import com.doklad.api.repo.DocumentRepository;
+import com.doklad.api.repo.DocumentRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class DocumentService {
-    private final DocumentRepository documentRepository;
+    private final DocumentRepo documentRepo;
 
     @Autowired
-    public DocumentService(DocumentRepository documentRepository) {
-        this.documentRepository = documentRepository;
+    public DocumentService(DocumentRepo documentRepo) {
+        this.documentRepo = documentRepo;
     }
 }

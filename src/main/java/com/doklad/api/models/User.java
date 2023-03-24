@@ -7,7 +7,7 @@ import jakarta.validation.constraints.Size;
 
 import java.util.Date;
 import java.util.Objects;
-
+import java.util.List;
 @Entity
 @Table(name = "user")
 public class User {
@@ -53,6 +53,12 @@ public class User {
     @Column(name = "updated_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedAt;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> myOrders;
+
+    @OneToMany(mappedBy = "staffProcessedOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Order> userOrders;
 
     public User() {
     }
