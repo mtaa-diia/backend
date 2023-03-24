@@ -1,6 +1,7 @@
 package com.doklad.api.models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
@@ -36,9 +37,13 @@ public class User {
     private String password;
 
     @Column(name = "email")
-    @NotEmpty(message = "Email is required")
-    @Size(min = 3, max = 255, message = "Email must be between 3 and 255 characters")
+    @Email(message = "Email should be valid")
     private String email;
+
+    @Column(name = "role_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "role_id")
+    private Role role;
 
 
     @Column(name = "created_at")
@@ -52,14 +57,14 @@ public class User {
     public User() {
     }
 
-    public User(String firstName, String lastName, String username, String password, String email, Date createdAt, Date updatedAt) {
+
+    public User(String firstName, String lastName, String username, String password, String email, Role role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
         this.password = password;
         this.email = email;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.role = role;
     }
 
     public Long getId() {
