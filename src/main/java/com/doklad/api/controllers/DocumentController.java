@@ -7,9 +7,9 @@ import com.doklad.api.models.User;
 import com.doklad.api.services.DocumentService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,17 +28,47 @@ public class DocumentController {
     }
 
     @GetMapping("/")
-    public List<DocumentDTO> findAll() {
+    public ResponseEntity<List<DocumentDTO>> findAll() {
         List<Document> users = documentService.findAll();
+        List<DocumentDTO> userDTOs = users.stream().map(this::convertToDto).collect(Collectors.toList());
 
-        return users.stream().map(this::convertToDto).collect(Collectors.toList());
+        return ResponseEntity.ok(userDTOs);
     }
 
     @GetMapping("/{id}")
-    public DocumentDTO findById(Long id) {
+    public ResponseEntity<DocumentDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Document> document = documentService.findById(id);
 
-        return convertToDto(document.get());
+        return ResponseEntity.ok(convertToDto(document.get()));
+    }
+
+    @PostMapping("/")
+    public ResponseEntity<DocumentDTO> save(@RequestBody DocumentDTO documentDTO) {
+        Document document = convertToEntity(documentDTO);
+        document = documentService.save(document);
+
+        return ResponseEntity.ok(convertToDto(document));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<DocumentDTO> update(@PathVariable(name = "id") Long id, @RequestBody DocumentDTO documentDTO) {
+
+        Optional<Document> document = documentService.findById(id);
+
+        return document.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id) {
+        Optional<Document> document = documentService.findById(id);
+
+        if (document.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        documentService.deleteById(id);
+
+        return ResponseEntity.ok().build();
     }
 
     private DocumentDTO convertToDto(Document document) {
