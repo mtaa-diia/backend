@@ -35,6 +35,7 @@ public class DocumentController {
         return ResponseEntity.ok(userDTOs);
     }
 
+    // Write exception handler for findById
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Document> document = documentService.findById(id);
@@ -42,6 +43,7 @@ public class DocumentController {
         return ResponseEntity.ok(convertToDto(document.get()));
     }
 
+    // Write exception handler for update method
     @PostMapping("/")
     public ResponseEntity<DocumentDTO> save(@RequestBody DocumentDTO documentDTO) {
         Document document = convertToEntity(documentDTO);
@@ -50,6 +52,8 @@ public class DocumentController {
         return ResponseEntity.ok(convertToDto(document));
     }
 
+
+    // Write exception handler for update method
     @PutMapping("/{id}")
     public ResponseEntity<DocumentDTO> update(@PathVariable(name = "id") Long id, @RequestBody DocumentDTO documentDTO) {
 
@@ -59,6 +63,7 @@ public class DocumentController {
 
     }
 
+    // Write exception handler for delete method
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteById(@PathVariable(name = "id") Long id) {
         Optional<Document> document = documentService.findById(id);

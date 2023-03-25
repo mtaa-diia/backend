@@ -19,8 +19,8 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public Optional<List<User>> findAll() {
-        return Optional.of(userRepository.findAll());
+    public List<User> findAll() {
+        return userRepository.findAll();
     }
 
     public Optional<User> findById(Long id) {
