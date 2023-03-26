@@ -37,9 +37,9 @@ public class StatusService {
     }
 
     @Transactional
-    public void update(Status status) {
+    public Status update(Status status) {
         status.setUpdatedAt(new Date());
-        statusRepo.save(status);
+        return statusRepo.save(status);
     }
 
     @Transactional
