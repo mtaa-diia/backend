@@ -35,9 +35,9 @@ public class ServiceService {
     }
 
     @Transactional
-    public void update(com.doklad.api.models.Service service) {
+    public com.doklad.api.models.Service update(com.doklad.api.models.Service service) {
         service.setUpdatedAt(new Date());
-        serviceRepo.save(service);
+        return serviceRepo.save(service);
     }
 
     @Transactional

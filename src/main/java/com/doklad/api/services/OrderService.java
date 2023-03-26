@@ -36,9 +36,9 @@ public class OrderService {
     }
 
     @Transactional
-    public void update(Order order) {
+    public Order update(Order order) {
         order.setUpdatedAt(new Date());
-        orderRepo.save(order);
+        return orderRepo.save(order);
     }
 
     @Transactional

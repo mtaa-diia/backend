@@ -38,9 +38,9 @@ public class RoleService {
     }
 
     @Transactional
-    public void update(Role role) {
+    public Role update(Role role) {
         role.setUpdatedAt(new Date());
-        roleRepo.save(role);
+        return roleRepo.save(role);
     }
 
     @Transactional

@@ -15,7 +15,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/documents")
+@RequestMapping("/api/documents")
 public class DocumentController {
 
     private final DocumentService documentService;
