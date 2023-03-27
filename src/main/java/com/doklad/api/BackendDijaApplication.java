@@ -1,5 +1,6 @@
 package com.doklad.api;
 
+import com.github.javafaker.Faker;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,5 +19,10 @@ public class BackendDijaApplication {
         return new ModelMapper();
     }
 
+
+    @Bean
+    public Faker faker(){
+        return new Faker();
+    }
 
 }

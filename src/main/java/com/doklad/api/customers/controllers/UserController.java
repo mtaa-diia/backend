@@ -15,7 +15,7 @@ import com.doklad.api.customers.models.User;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
 
     private final UserService userService;

@@ -1,7 +1,10 @@
 package com.doklad.api.developers.v1.controllers;
 
 import com.doklad.api.customers.dto.UserDTO;
+import com.doklad.api.customers.models.User;
+import com.doklad.api.developers.v1.services.UserDataService;
 import com.github.javafaker.Faker;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,13 +15,20 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/v1/data/users")
+@RequestMapping("/api/v1/data/")
 public class DataController {
 
-    @GetMapping("/create")
-    public ResponseEntity<HttpStatus> generateUser(@RequestParam(name = "count", defaultValue = "1") int count) {
+    private final UserDataService userDataService;
 
-        return ResponseEntity.ok(HttpStatus.OK);
+    @Autowired
+    public DataController(UserDataService userDataService) {
+        this.userDataService = userDataService;
+    }
+
+    @GetMapping("/create/user")
+    public ResponseEntity<List<User>> createUser(@RequestParam(name = "count", defaultValue = "1") int count) {
+
+        return new ResponseEntity<>(userDataService.generateUsers(count), HttpStatus.OK);
     }
 
 

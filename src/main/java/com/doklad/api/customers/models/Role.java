@@ -36,12 +36,6 @@ public class Role {
     public Role() {
     }
 
-    public Role(RoleType role, Date createdAt, Date updatedAt) {
-        this.role = role;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
-
     public Role(RoleType role) {
         this.role = role;
     }

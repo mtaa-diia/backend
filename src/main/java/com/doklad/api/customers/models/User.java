@@ -8,10 +8,9 @@ import jakarta.validation.constraints.Size;
 import java.util.Date;
 import java.util.Objects;
 import java.util.List;
-@Entity
-@Table(name = "user")
+@Entity(name = "User")
+@Table(name = "\"User\"")
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -131,6 +130,31 @@ public class User {
 
     public void setUpdatedAt(Date updatedAt) {
         this.updatedAt = updatedAt;
+    }
+
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public List<Order> getMyOrders() {
+        return myOrders;
+    }
+
+    public void setMyOrders(List<Order> myOrders) {
+        this.myOrders = myOrders;
+    }
+
+    public List<Order> getUserOrders() {
+        return userOrders;
+    }
+
+    public void setUserOrders(List<Order> userOrders) {
+        this.userOrders = userOrders;
     }
 
     @Override

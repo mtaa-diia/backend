@@ -15,7 +15,7 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/status")
+@RequestMapping("/api/service")
 public class ServiceController {
 
     private final ServiceService serviceService;
