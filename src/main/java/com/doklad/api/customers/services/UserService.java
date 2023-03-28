@@ -29,6 +29,7 @@ public class UserService {
 
     @Transactional
     public User save(User user) {
+
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
         return userRepository.save(user);

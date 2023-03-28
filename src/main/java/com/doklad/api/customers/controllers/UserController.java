@@ -44,6 +44,14 @@ public class UserController {
 
     }
 
+    @PostMapping("/")
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+        User user = convertToEntity(userDTO);
+        User savedUser = userService.save(user);
+
+        return ResponseEntity.ok(convertToDto(savedUser));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDTO) {
 

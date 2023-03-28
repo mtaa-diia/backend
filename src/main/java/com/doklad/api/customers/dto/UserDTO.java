@@ -3,20 +3,17 @@ package com.doklad.api.customers.dto;
 import java.util.Objects;
 
 public class UserDTO {
-
-    private Long id;
     private String firstName;
     private String lastName;
     private String username;
     private String password;
     private String email;
-    private RoleDto role;
+    private Integer role;
 
     public UserDTO() {
     }
 
-    public UserDTO(Long id, String firstName, String lastName, String username, String password, String email, RoleDto role) {
-        this.id = id;
+    public UserDTO( String firstName, String lastName, String username, String password, String email, Integer role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -25,13 +22,6 @@ public class UserDTO {
         this.role = role;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getFirstName() {
         return firstName;
@@ -73,36 +63,12 @@ public class UserDTO {
         this.email = email;
     }
 
-    public RoleDto getRole() {
+    public Integer getRole() {
         return role;
     }
 
-    public void setRole(RoleDto role) {
+    public void setRole(Integer role) {
         this.role = role;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof UserDTO userDTO)) return false;
-        return Objects.equals(id, userDTO.id) && Objects.equals(firstName, userDTO.firstName) && Objects.equals(lastName, userDTO.lastName) && Objects.equals(username, userDTO.username) && Objects.equals(password, userDTO.password) && Objects.equals(email, userDTO.email) && Objects.equals(role, userDTO.role);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id, firstName, lastName, username, password, email, role);
-    }
-
-    @Override
-    public String toString() {
-        return "UserDTO{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                ", email='" + email + '\'' +
-                ", role=" + role +
-                '}';
-    }
 }
