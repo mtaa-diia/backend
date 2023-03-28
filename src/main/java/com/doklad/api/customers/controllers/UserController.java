@@ -36,7 +36,6 @@ public class UserController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    // Write exception handler for findById
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<User> user = userService.findById(id);
@@ -45,7 +44,6 @@ public class UserController {
 
     }
 
-    // Write exception handler for update method
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDTO) {
 
