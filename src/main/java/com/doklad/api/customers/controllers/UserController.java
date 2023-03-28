@@ -3,11 +3,7 @@ package com.doklad.api.customers.controllers;
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.dto.UserDTO;
-<<<<<<< HEAD
 import com.doklad.api.customers.utility.enums.RoleType;
-=======
-import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
->>>>>>> 5949cdd918666e5e6091890500be957a42a89509
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
