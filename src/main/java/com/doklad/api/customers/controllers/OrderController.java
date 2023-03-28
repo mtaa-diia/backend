@@ -35,7 +35,6 @@ public class OrderController{
             return ResponseEntity.ok(orderDTOs);
         }
 
-        // Write exception handler for findById
         @GetMapping("/{id}")
         public ResponseEntity<OrderDTO> findById(@PathVariable(name = "id") Long id) {
             Optional<Order> order = orderService.findById(id);
@@ -43,7 +42,6 @@ public class OrderController{
             return order.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
         }
 
-        // Write exception handler for update method
         @PutMapping("/{id}")
         public ResponseEntity<OrderDTO> update(@PathVariable(name = "id") Long id, @RequestBody OrderDTO orderDTO) {
 
@@ -59,7 +57,6 @@ public class OrderController{
             return ResponseEntity.ok(newOrderDTO);
         }
 
-        // Write exception handler for delete method
         @DeleteMapping("/{id}")
         public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
             Optional<Order> order = orderService.findById(id);

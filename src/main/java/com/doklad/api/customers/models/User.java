@@ -1,5 +1,8 @@
 package com.doklad.api.customers.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
@@ -39,8 +42,9 @@ public class User {
     @Email(message = "Email should be valid")
     private String email;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "role_id")
+    @JsonBackReference
     private Role role;
 
 
@@ -56,6 +60,7 @@ public class User {
     private List<Order> myOrders;
 
     @OneToMany(mappedBy = "staffProcessedOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonSerialize
     private List<Order> userOrders;
 
     public User() {
@@ -85,6 +90,7 @@ public class User {
     }
 
     public String getLastName() {
+
         return lastName;
     }
 

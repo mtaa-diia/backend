@@ -1,6 +1,10 @@
 package com.doklad.api.customers.models;
 
 import com.doklad.api.customers.utility.enums.RoleType;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import java.util.Date;
@@ -30,6 +34,7 @@ public class Role {
     private Date updatedAt;
 
     @OneToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonIgnore
     private List<User> users;
 
 
@@ -44,6 +49,13 @@ public class Role {
         return id;
     }
 
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
 
     public RoleType getRole() {
         return role;

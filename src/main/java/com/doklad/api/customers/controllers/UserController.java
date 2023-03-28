@@ -36,7 +36,6 @@ public class UserController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    // Write exception handler for findById
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<User> user = userService.findById(id);
@@ -45,13 +44,26 @@ public class UserController {
 
     }
 
-    // Write exception handler for update method
+    @PostMapping("/")
+    public ResponseEntity<UserDTO> create(@RequestBody UserDTO userDTO) {
+        User user = convertToEntity(userDTO);
+        User savedUser = userService.save(user);
+
+        return ResponseEntity.ok(convertToDto(savedUser));
+    }
+
     @PutMapping("/{id}")
     public ResponseEntity<UserDTO> update(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDTO) {
 
         Optional<User> user = userService.findById(id);
+        User updatedUser = convertToEntity(userDTO);
 
-        return user.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        if (user.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        UserDTO updateUserDTO = convertToDto(userService.update(updatedUser));
+
+        return ResponseEntity.ok(updateUserDTO);
 
     }
 

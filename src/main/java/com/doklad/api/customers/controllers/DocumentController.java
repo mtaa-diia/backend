@@ -1,13 +1,18 @@
 package com.doklad.api.customers.controllers;
 
+import com.doklad.api.customers.models.Status;
+import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.dto.DocumentDTO;
 import com.doklad.api.customers.models.Document;
+import com.doklad.api.customers.services.UserService;
+import com.doklad.api.customers.utility.enums.StatusType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -17,11 +22,13 @@ import java.util.stream.Collectors;
 public class DocumentController {
 
     private final DocumentService documentService;
+    private final UserService userService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public DocumentController(DocumentService documentService, ModelMapper modelMapper) {
+    public DocumentController(DocumentService documentService, ModelMapper modelMapper, UserService userService) {
         this.documentService = documentService;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -33,7 +40,6 @@ public class DocumentController {
         return ResponseEntity.ok(userDTOs);
     }
 
-    // Write exception handler for findById
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Document> document = documentService.findById(id);
@@ -44,7 +50,15 @@ public class DocumentController {
     // Write exception handler for update method
     @PostMapping("/")
     public ResponseEntity<DocumentDTO> save(@RequestBody DocumentDTO documentDTO) {
-        Document document = convertToEntity(documentDTO);
+
+        Optional<User> user = userService.findById(documentDTO.getUser());
+
+        if (user.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        Document document =new Document();
+        document.setUser(user.get());
+        document = convertToEntity(documentDTO);
         document = documentService.save(document);
 
         return ResponseEntity.ok(convertToDto(document));

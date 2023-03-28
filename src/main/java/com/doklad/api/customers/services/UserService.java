@@ -29,15 +29,16 @@ public class UserService {
 
     @Transactional
     public User save(User user) {
+
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
         return userRepository.save(user);
     }
 
     @Transactional
-    public void update(User user) {
+    public User update(User user) {
         user.setUpdatedAt(new Date());
-        userRepository.save(user);
+        return userRepository.save(user);
     }
 
     @Transactional
