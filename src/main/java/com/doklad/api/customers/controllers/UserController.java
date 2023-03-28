@@ -56,8 +56,14 @@ public class UserController {
     public ResponseEntity<UserDTO> update(@PathVariable(name = "id") Long id, @RequestBody UserDTO userDTO) {
 
         Optional<User> user = userService.findById(id);
+        User updatedUser = convertToEntity(userDTO);
 
-        return user.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        if (user.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        UserDTO updateUserDTO = convertToDto(userService.update(updatedUser));
+
+        return ResponseEntity.ok(updateUserDTO);
 
     }
 
