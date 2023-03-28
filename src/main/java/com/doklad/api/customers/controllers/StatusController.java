@@ -3,6 +3,7 @@ package com.doklad.api.customers.controllers;
 import com.doklad.api.customers.dto.StatusDTO;
 import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.services.StatusService;
+import com.doklad.api.customers.utility.exception.statusExceptions.StatusNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,15 +41,18 @@ public class StatusController {
     public ResponseEntity<StatusDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Status> status = statusService.findById(id);
 
+        if(status.isEmpty())
+            throw new StatusNotFoundException("Status with id " + id.toString() + " was not found");
+
         return status.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StatusDTO> update(@PathVariable(name = "id") Long id, @RequestBody StatusDTO statusDto) {
+    public ResponseEntity<StatusDTO> update(@PathVariable(name = "id") Long id) {
         Optional<Status> status = statusService.findById(id);
 
-        if (status.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(status.isEmpty())
+            throw new StatusNotFoundException("Status with id " + id.toString() + " was not found");
 
         Status updatedStatus = status.get();
         StatusDTO updatedStatusDTO =  convertToDto(statusService.update(updatedStatus));

@@ -1,18 +1,16 @@
 package com.doklad.api.customers.controllers;
 
-import com.doklad.api.customers.models.Status;
-import com.doklad.api.customers.models.User;
-import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.dto.DocumentDTO;
 import com.doklad.api.customers.models.Document;
+import com.doklad.api.customers.models.User;
+import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.services.UserService;
-import com.doklad.api.customers.utility.enums.StatusType;
+import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -44,6 +42,9 @@ public class DocumentController {
     public ResponseEntity<DocumentDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Document> document = documentService.findById(id);
 
+        if (document.isEmpty())
+            throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
+
         return ResponseEntity.ok(convertToDto(document.get()));
     }
 
@@ -56,7 +57,7 @@ public class DocumentController {
         if (user.isEmpty())
             return ResponseEntity.notFound().build();
 
-        Document document =new Document();
+        Document document = new Document();
         document.setUser(user.get());
         document = convertToEntity(documentDTO);
         document = documentService.save(document);
@@ -67,9 +68,12 @@ public class DocumentController {
 
     // Write exception handler for update method
     @PutMapping("/{id}")
-    public ResponseEntity<DocumentDTO> update(@PathVariable(name = "id") Long id, @RequestBody DocumentDTO documentDTO) {
+    public ResponseEntity<DocumentDTO> update(@PathVariable(name = "id") Long id) {
 
         Optional<Document> document = documentService.findById(id);
+
+        if(document.isEmpty())
+            throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
 
         return document.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
@@ -81,7 +85,7 @@ public class DocumentController {
         Optional<Document> document = documentService.findById(id);
 
         if (document.isEmpty())
-            return ResponseEntity.notFound().build();
+            throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
 
         documentService.deleteById(id);
 

@@ -3,6 +3,7 @@ package com.doklad.api.customers.controllers;
 import com.doklad.api.customers.dto.ServiceDto;
 import com.doklad.api.customers.models.Service;
 import com.doklad.api.customers.services.ServiceService;
+import com.doklad.api.customers.utility.exception.serviceExceptions.ServiceNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -41,15 +42,18 @@ public class ServiceController {
     public ResponseEntity<ServiceDto> findById(@PathVariable(name = "id") Long id) {
         Optional<Service> service = serviceService.findById(id);
 
+        if(service.isEmpty())
+            throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
+
         return service.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ServiceDto> update(@PathVariable(name = "id") Long id, @RequestBody ServiceDto serviceDto) {
+    public ResponseEntity<ServiceDto> update(@PathVariable(name = "id") Long id) {
         Optional<Service> service = serviceService.findById(id);
 
-        if (service.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(service.isEmpty())
+            throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
 
         Service updatedService = service.get();
         ServiceDto updatedServiceDto =  convertToDto(serviceService.update(updatedService));
@@ -61,8 +65,8 @@ public class ServiceController {
     public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
         Optional<Service> service = serviceService.findById(id);
 
-        if (service.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(service.isEmpty())
+            throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
 
         serviceService.deleteById(service.get().getId());
 

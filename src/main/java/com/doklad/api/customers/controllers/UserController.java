@@ -3,7 +3,11 @@ package com.doklad.api.customers.controllers;
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.dto.UserDTO;
+<<<<<<< HEAD
 import com.doklad.api.customers.utility.enums.RoleType;
+=======
+import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
+>>>>>>> 5949cdd918666e5e6091890500be957a42a89509
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -52,7 +56,6 @@ public class UserController {
         userDTO = convertToDto(user.get());
 
         return ResponseEntity.ok(userDTO);
-
     }
 
     @PostMapping("/")
@@ -69,8 +72,8 @@ public class UserController {
         Optional<User> user = userService.findById(id);
         User updatedUser = convertToEntity(userDTO);
 
-        if (user.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(user.isEmpty())
+            throw new UserNotFoundException("User with id " + id.toString() + " was not found");
 
         UserDTO updateUserDTO = convertToDto(userService.update(updatedUser));
 
@@ -86,6 +89,7 @@ public class UserController {
 
         if (user.isEmpty())
             return ResponseEntity.notFound().build();
+
 
         userService.deleteById(id);
 
