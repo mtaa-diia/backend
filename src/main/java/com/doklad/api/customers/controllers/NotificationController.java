@@ -3,6 +3,7 @@ package com.doklad.api.customers.controllers;
 import com.doklad.api.customers.dto.NotificationDTO;
 import com.doklad.api.customers.models.Notification;
 import com.doklad.api.customers.services.NotificationService;
+import com.doklad.api.customers.utility.exception.notificationExceptions.NotificationNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -38,15 +39,20 @@ public class NotificationController {
     public ResponseEntity<NotificationDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Notification> notification = notificationService.findById(id);
 
+        if(notification.isEmpty())
+            throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
+
         return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<NotificationDTO> update(@PathVariable(name = "id") Long id, @RequestBody NotificationDTO notificationDTO) {
+    public ResponseEntity<NotificationDTO> update(@PathVariable(name = "id") Long id) {
 
         Optional<Notification> notification = notificationService.findById(id);
 
+        if(notification.isEmpty())
+            throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
         return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
@@ -56,8 +62,8 @@ public class NotificationController {
     public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
         Optional<Notification> notification = notificationService.findById(id);
 
-        if (notification.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(notification.isEmpty())
+            throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
         notificationService.deleteById(notification.get().getId());
 

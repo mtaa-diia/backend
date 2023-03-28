@@ -3,6 +3,7 @@ package com.doklad.api.customers.controllers;
 import com.doklad.api.customers.dto.RoleDto;
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.services.RoleService;
+import com.doklad.api.customers.utility.exception.roleExceptions.RoleNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -39,15 +40,18 @@ public class RoleController {
     public ResponseEntity<RoleDto> findById(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
+        if(role.isEmpty())
+            throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
+
         return role.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> update(@PathVariable(name = "id") Long id, @RequestBody RoleDto roleDto) {
+    public ResponseEntity<RoleDto> update(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
-        if (role.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(role.isEmpty())
+            throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
 
         Role updatedRole = role.get();
         RoleDto updatedRoleDto =  convertToDto(roleService.update(updatedRole));
@@ -59,8 +63,8 @@ public class RoleController {
     public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
-        if (role.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(role.isEmpty())
+            throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
 
         roleService.deleteById(role.get().getId());
 

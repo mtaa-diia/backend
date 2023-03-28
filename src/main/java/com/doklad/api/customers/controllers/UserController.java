@@ -2,6 +2,7 @@ package com.doklad.api.customers.controllers;
 
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.dto.UserDTO;
+import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,6 +41,9 @@ public class UserController {
     public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<User> user = userService.findById(id);
 
+        if(user.isEmpty())
+            throw new UserNotFoundException("User with id " + id.toString() + " was not found");
+
         return user.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
@@ -58,8 +62,8 @@ public class UserController {
         Optional<User> user = userService.findById(id);
         User updatedUser = convertToEntity(userDTO);
 
-        if (user.isEmpty())
-            return ResponseEntity.notFound().build();
+        if(user.isEmpty())
+            throw new UserNotFoundException("User with id " + id.toString() + " was not found");
 
         UserDTO updateUserDTO = convertToDto(userService.update(updatedUser));
 
@@ -72,6 +76,9 @@ public class UserController {
     public ResponseEntity<UserDTO> delete(@PathVariable(name = "id") Long id) {
 
         Optional<User> user = userService.findById(id);
+
+        if (user.isEmpty())
+            return ResponseEntity.notFound().build();
 
         return user.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
