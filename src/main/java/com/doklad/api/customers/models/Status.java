@@ -31,10 +31,9 @@ public class Status {
     public Status() {
     }
 
-    public Status(StatusType status, Date createdAt, Date updatedAt) {
+    public Status(StatusType status) {
         this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+
     }
 
     public Long getId() {

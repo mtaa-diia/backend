@@ -51,14 +51,12 @@ public class Document {
     public Document() {
     }
 
-    public Document(String title, String content, String description, User user, Status status, Date createdAt, Date updatedAt) {
-        this.title = title;
+    public Document(String content, String description, String title, Status status, User user) {
         this.content = content;
         this.description = description;
-        this.user = user;
+        this.title = title;
         this.status = status;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
+        this.user = user;
     }
 
     public Long getId() {

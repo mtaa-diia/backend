@@ -1,6 +1,6 @@
 package com.doklad.api.customers.controllers;
 
-import com.doklad.api.customers.dto.StatusDto;
+import com.doklad.api.customers.dto.StatusDTO;
 import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.services.StatusService;
 import org.modelmapper.ModelMapper;
@@ -29,39 +29,39 @@ public class StatusController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<StatusDto>> findAll() {
+    public ResponseEntity<List<StatusDTO>> findAll() {
         List<Status> statuses = statusService.findAll();
-        List<StatusDto> statusDtos = statuses.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<StatusDTO> statusDTOS = statuses.stream().map(this::convertToDto).collect(Collectors.toList());
 
-        return ResponseEntity.ok(statusDtos);
+        return ResponseEntity.ok(statusDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StatusDto> findById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<StatusDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Status> status = statusService.findById(id);
 
         return status.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StatusDto> update(@PathVariable(name = "id") Long id, @RequestBody StatusDto statusDto) {
+    public ResponseEntity<StatusDTO> update(@PathVariable(name = "id") Long id, @RequestBody StatusDTO statusDto) {
         Optional<Status> status = statusService.findById(id);
 
         if (status.isEmpty())
             return ResponseEntity.notFound().build();
 
         Status updatedStatus = status.get();
-        StatusDto updatedStatusDto =  convertToDto(statusService.update(updatedStatus));
+        StatusDTO updatedStatusDTO =  convertToDto(statusService.update(updatedStatus));
 
-        return ResponseEntity.ok(updatedStatusDto);
+        return ResponseEntity.ok(updatedStatusDTO);
     }
 
 
-    private Status convertToEntity(StatusDto statusDto) {
+    private Status convertToEntity(StatusDTO statusDto) {
         return modelMapper.map(statusDto, Status.class);
     }
 
-    private StatusDto convertToDto(Status statuses) {
-        return  modelMapper.map(statuses, StatusDto.class);
+    private StatusDTO convertToDto(Status statuses) {
+        return  modelMapper.map(statuses, StatusDTO.class);
     }
 }

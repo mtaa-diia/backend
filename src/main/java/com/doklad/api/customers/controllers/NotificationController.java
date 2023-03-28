@@ -49,6 +49,7 @@ public class NotificationController {
 
         Optional<Notification> notification = notificationService.findById(id);
 
+
         return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
     }

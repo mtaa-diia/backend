@@ -86,7 +86,7 @@ public class User {
     }
 
     public void setFirstName(String firstName) {
-        this.firstName = firstName.length() > 255 ? firstName.substring(0, 255) : firstName;
+        this.firstName = firstName;
     }
 
     public String getLastName() {
@@ -95,7 +95,7 @@ public class User {
     }
 
     public void setLastName(String lastName) {
-        this.lastName = lastName.length() > 255 ? lastName.substring(0, 255) : lastName;
+        this.lastName = lastName;
     }
 
     public String getUsername() {
@@ -103,7 +103,7 @@ public class User {
     }
 
     public void setUsername(String username) {
-        this.username = username.length() > 255 ? username.substring(0, 255) : username;
+        this.username = username;
     }
 
     public String getPassword() {
