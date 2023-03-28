@@ -1,9 +1,12 @@
 package com.doklad.api.customers.controllers;
 
+import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.dto.UserDTO;
+import com.doklad.api.customers.utility.enums.RoleType;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,18 +32,26 @@ public class UserController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<UserDTO>> findAll() {
+    public ResponseEntity<List<User>> findAll() {
         List<User> users = userService.findAll();
-        List<UserDTO> userDTOs = users.stream().map(this::convertToDto).collect(Collectors.toList());
 
-        return ResponseEntity.ok(userDTOs);
+//        List<UserDTO> userDTOs = users.stream().map(this::convertToDto).collect(Collectors.toList());
+
+        return ResponseEntity.ok(users);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<User> user = userService.findById(id);
 
-        return user.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        if (user.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        UserDTO userDTO = new UserDTO();
+        userDTO.setRole(RoleType.USER);
+        userDTO = convertToDto(user.get());
+
+        return ResponseEntity.ok(userDTO);
 
     }
 
@@ -69,11 +80,16 @@ public class UserController {
 
     // Write exception handler for delete method
     @DeleteMapping("/{id}")
-    public ResponseEntity<UserDTO> delete(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
 
         Optional<User> user = userService.findById(id);
 
-        return user.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        if (user.isEmpty())
+            return ResponseEntity.notFound().build();
+
+        userService.deleteById(id);
+
+        return ResponseEntity.ok(HttpStatus.OK);
 
     }
 

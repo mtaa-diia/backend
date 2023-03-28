@@ -1,7 +1,9 @@
 package com.doklad.api.customers.services;
 
+import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.repo.UserRepo;
+import com.doklad.api.customers.utility.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +22,10 @@ public class UserService {
     }
 
     public List<User> findAll() {
+        List<User> users = userRepository.findAll();
+        for (User user : users) {
+            user.setRole(new Role(RoleType.USER));
+        }
         return userRepository.findAll();
     }
 
@@ -47,4 +53,7 @@ public class UserService {
     }
 
 
+    public Optional<User> findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
