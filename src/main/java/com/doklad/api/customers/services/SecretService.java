@@ -4,8 +4,8 @@ import com.doklad.api.customers.models.Secret;
 import com.doklad.api.customers.repo.SecretRepo;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
 import java.util.List;

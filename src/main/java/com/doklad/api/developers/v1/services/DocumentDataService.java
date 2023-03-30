@@ -5,14 +5,12 @@ import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.repo.UserRepo;
 import com.doklad.api.customers.utility.enums.StatusType;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,10 +38,10 @@ public class DocumentDataService {
 
         Optional<User> user = userRepo.findById((long) number);
 
-        if(user.isEmpty())
+        if (user.isEmpty())
             return Collections.emptyList();
 
-        IntStream.range(1, count).forEach( i -> {
+        IntStream.range(1, count).forEach(i -> {
             String content = faker.lorem().paragraph();
             String description = faker.lorem().sentence();
             String title = faker.lorem().sentence();

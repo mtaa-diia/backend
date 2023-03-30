@@ -2,8 +2,8 @@ package com.doklad.api.customers.dto;
 
 public class AuthenticationDTO {
 
-    private  String username;
-    private  String password;
+    private String username;
+    private String password;
 
     public AuthenticationDTO(String username, String password) {
         this.username = username;

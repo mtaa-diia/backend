@@ -1,7 +1,6 @@
 package com.doklad.api.customers.models;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
@@ -9,8 +8,9 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 
 import java.util.Date;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
+
 @Entity(name = "User")
 @Table(name = "\"User\"")
 public class User {

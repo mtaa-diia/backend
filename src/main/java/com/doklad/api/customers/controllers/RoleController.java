@@ -40,7 +40,7 @@ public class RoleController {
     public ResponseEntity<RoleDto> findById(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
-        if(role.isEmpty())
+        if (role.isEmpty())
             throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
 
         return role.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
@@ -50,11 +50,11 @@ public class RoleController {
     public ResponseEntity<RoleDto> update(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
-        if(role.isEmpty())
+        if (role.isEmpty())
             throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
 
         Role updatedRole = role.get();
-        RoleDto updatedRoleDto =  convertToDto(roleService.update(updatedRole));
+        RoleDto updatedRoleDto = convertToDto(roleService.update(updatedRole));
 
         return ResponseEntity.ok(updatedRoleDto);
     }
@@ -63,7 +63,7 @@ public class RoleController {
     public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
-        if(role.isEmpty())
+        if (role.isEmpty())
             throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
 
         roleService.deleteById(role.get().getId());

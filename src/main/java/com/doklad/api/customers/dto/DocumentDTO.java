@@ -2,8 +2,7 @@ package com.doklad.api.customers.dto;
 
 import com.doklad.api.customers.utility.enums.StatusType;
 
-public class DocumentDTO
-{
+public class DocumentDTO {
     private String content;
     private String description;
     private String title;
@@ -11,12 +10,10 @@ public class DocumentDTO
 
     private StatusType status;
 
-    public DocumentDTO()
-    {
+    public DocumentDTO() {
     }
 
-    public DocumentDTO(String content, String description, String title, Long user, StatusType status)
-    {
+    public DocumentDTO(String content, String description, String title, Long user, StatusType status) {
         this.content = content;
         this.description = description;
         this.title = title;

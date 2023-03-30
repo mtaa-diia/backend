@@ -7,9 +7,11 @@ import com.doklad.api.customers.utility.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.Optional;
 import java.util.List;
 import java.util.Date;
+
 @Service
 @Transactional(readOnly = true)
 public class UserService {
