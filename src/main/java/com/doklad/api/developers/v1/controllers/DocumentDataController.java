@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/document-data")
@@ -34,7 +35,7 @@ public class DocumentDataController {
     public ResponseEntity<List<DocumentDTO>> createDocument(@RequestParam(name = "count", defaultValue = "1") int count) {
         List<Document> documents = documentDataService.generateDocumentNumber(count);
 
-        List<DocumentDTO> documentDTOS = documents.stream().map(this::convertToDto).toList();
+        List<DocumentDTO> documentDTOS = documents.stream().map(this::convertToDto).collect(Collectors.toList());
 
 
         documents.stream().forEach(documentService::save);
