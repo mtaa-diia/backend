@@ -1,11 +1,15 @@
 package com.doklad.api.customers.controllers;
 
 import com.doklad.api.customers.dto.DocumentDTO;
+import com.doklad.api.customers.dto.SecretDTO;
 import com.doklad.api.customers.models.Document;
+import com.doklad.api.customers.models.Secret;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.services.DocumentService;
+import com.doklad.api.customers.services.SecretService;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
+import com.doklad.api.customers.utility.secrets.SecretValueGenerator;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,13 +25,16 @@ public class DocumentController {
 
     private final DocumentService documentService;
     private final UserService userService;
+
+    private final SecretService secretService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public DocumentController(DocumentService documentService, ModelMapper modelMapper, UserService userService) {
+    public DocumentController(DocumentService documentService, SecretService secretService, ModelMapper modelMapper, UserService userService) {
         this.documentService = documentService;
         this.userService = userService;
         this.modelMapper = modelMapper;
+        this.secretService = secretService;
     }
 
     @GetMapping("/")
@@ -92,8 +99,26 @@ public class DocumentController {
         return ResponseEntity.ok().build();
     }
 
+    @GetMapping("/{id}/secret")
+    public ResponseEntity<SecretDTO> generateSecret(@PathVariable(name = "id") Long id) {
+        Optional<Document> document = documentService.findById(id);
+
+        if (document.isEmpty())
+            throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
+
+        Secret secret = new Secret();
+        secret.setDocument(document.get());
+        secret.setValue(SecretValueGenerator.generate());
+        secret = secretService.save(secret);
+
+        return ResponseEntity.ok(convertToDto(secret));
+    }
+
     private DocumentDTO convertToDto(Document document) {
         return modelMapper.map(document, DocumentDTO.class);
+    }
+    private SecretDTO convertToDto(Secret secret) {
+        return modelMapper.map(secret, SecretDTO.class);
     }
 
     private Document convertToEntity(DocumentDTO documentDTO) {

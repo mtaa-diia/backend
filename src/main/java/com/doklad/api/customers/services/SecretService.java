@@ -21,12 +21,12 @@ public class SecretService {
         this.secretRepo = secretRepo;
     }
 
-    public List<Secret> findByDocument(Long documentId) {
-        return secretRepo.findSecretByDocumentId(documentId);
-    }
-
     public Optional<Secret> findByValue(String secretValue) {
         return secretRepo.findSecretByValue(secretValue);
+    }
+
+    public List<Secret> findAll() {
+        return secretRepo.findAll();
     }
 
     @Transactional
