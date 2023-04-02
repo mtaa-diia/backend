@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/notifications")
@@ -39,7 +39,7 @@ public class NotificationController {
     public ResponseEntity<NotificationDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Notification> notification = notificationService.findById(id);
 
-        if(notification.isEmpty())
+        if (notification.isEmpty())
             throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
         return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,7 +51,7 @@ public class NotificationController {
 
         Optional<Notification> notification = notificationService.findById(id);
 
-        if(notification.isEmpty())
+        if (notification.isEmpty())
             throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
         return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
@@ -62,7 +62,7 @@ public class NotificationController {
     public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
         Optional<Notification> notification = notificationService.findById(id);
 
-        if(notification.isEmpty())
+        if (notification.isEmpty())
             throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
         notificationService.deleteById(notification.get().getId());

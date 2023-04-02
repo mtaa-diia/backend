@@ -11,8 +11,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 
 @RestController
@@ -42,7 +42,7 @@ public class ServiceController {
     public ResponseEntity<ServiceDto> findById(@PathVariable(name = "id") Long id) {
         Optional<Service> service = serviceService.findById(id);
 
-        if(service.isEmpty())
+        if (service.isEmpty())
             throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
 
         return service.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
@@ -52,11 +52,11 @@ public class ServiceController {
     public ResponseEntity<ServiceDto> update(@PathVariable(name = "id") Long id) {
         Optional<Service> service = serviceService.findById(id);
 
-        if(service.isEmpty())
+        if (service.isEmpty())
             throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
 
         Service updatedService = service.get();
-        ServiceDto updatedServiceDto =  convertToDto(serviceService.update(updatedService));
+        ServiceDto updatedServiceDto = convertToDto(serviceService.update(updatedService));
 
         return ResponseEntity.ok(updatedServiceDto);
     }
@@ -65,7 +65,7 @@ public class ServiceController {
     public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
         Optional<Service> service = serviceService.findById(id);
 
-        if(service.isEmpty())
+        if (service.isEmpty())
             throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
 
         serviceService.deleteById(service.get().getId());

@@ -4,17 +4,15 @@ import com.doklad.api.customers.utility.enums.StatusType;
 
 import java.util.Objects;
 
-public class StatusDTO{
+public class StatusDTO {
     private Long id;
     private StatusType statusType;
 
 
-    public StatusDTO()
-    {
+    public StatusDTO() {
     }
 
-    public StatusDTO(Long id, StatusType statusType)
-    {
+    public StatusDTO(Long id, StatusType statusType) {
         this.id = id;
         this.statusType = statusType;
     }

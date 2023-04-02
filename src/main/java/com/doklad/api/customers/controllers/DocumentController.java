@@ -21,6 +21,7 @@ public class DocumentController {
 
     private final DocumentService documentService;
     private final UserService userService;
+
     private final ModelMapper modelMapper;
 
     @Autowired
@@ -72,7 +73,7 @@ public class DocumentController {
 
         Optional<Document> document = documentService.findById(id);
 
-        if(document.isEmpty())
+        if (document.isEmpty())
             throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
 
         return document.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());

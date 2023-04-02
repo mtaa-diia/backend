@@ -2,8 +2,6 @@ package com.doklad.api.customers.dto;
 
 import com.doklad.api.customers.utility.enums.RoleType;
 
-import java.util.Objects;
-
 public class UserDTO {
     private String firstName;
     private String lastName;
@@ -15,7 +13,7 @@ public class UserDTO {
     public UserDTO() {
     }
 
-    public UserDTO( String firstName, String lastName, String username, String password, String email, RoleType role) {
+    public UserDTO(String firstName, String lastName, String username, String password, String email, RoleType role) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;

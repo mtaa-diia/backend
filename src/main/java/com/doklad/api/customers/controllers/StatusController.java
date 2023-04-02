@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -41,7 +42,7 @@ public class StatusController {
     public ResponseEntity<StatusDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Status> status = statusService.findById(id);
 
-        if(status.isEmpty())
+        if (status.isEmpty())
             throw new StatusNotFoundException("Status with id " + id.toString() + " was not found");
 
         return status.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
@@ -51,11 +52,11 @@ public class StatusController {
     public ResponseEntity<StatusDTO> update(@PathVariable(name = "id") Long id) {
         Optional<Status> status = statusService.findById(id);
 
-        if(status.isEmpty())
+        if (status.isEmpty())
             throw new StatusNotFoundException("Status with id " + id.toString() + " was not found");
 
         Status updatedStatus = status.get();
-        StatusDTO updatedStatusDTO =  convertToDto(statusService.update(updatedStatus));
+        StatusDTO updatedStatusDTO = convertToDto(statusService.update(updatedStatus));
 
         return ResponseEntity.ok(updatedStatusDTO);
     }
@@ -66,6 +67,6 @@ public class StatusController {
     }
 
     private StatusDTO convertToDto(Status statuses) {
-        return  modelMapper.map(statuses, StatusDTO.class);
+        return modelMapper.map(statuses, StatusDTO.class);
     }
 }

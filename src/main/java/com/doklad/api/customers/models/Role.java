@@ -1,15 +1,13 @@
 package com.doklad.api.customers.models;
 
 import com.doklad.api.customers.utility.enums.RoleType;
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+
 import java.util.Date;
-import java.util.Objects;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "role")
