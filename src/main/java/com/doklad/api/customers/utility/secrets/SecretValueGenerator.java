@@ -2,15 +2,15 @@ package com.doklad.api.customers.utility.secrets;
 
 import java.util.Random;
 
-public class SecretValueGenerator {
-    public static final String dictionary = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
-    public static final int length = 256;
-    private static final Random random = new Random();
+public interface SecretValueGenerator {
+    String DICTIONARY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_";
+    int LENGTH = 256;
+    Random random = new Random();
 
-    public static String generate() {
+    static String generate() {
         StringBuilder output = new StringBuilder();
-        for (int i = 0; i < length; i++) {
-            output.append(dictionary.charAt(random.nextInt(dictionary.length())));
+        for (int i = 0; i < LENGTH; i++) {
+            output.append(DICTIONARY.charAt(random.nextInt(DICTIONARY.length())));
         }
         return output.toString();
     }
