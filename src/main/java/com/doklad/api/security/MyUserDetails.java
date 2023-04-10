@@ -27,7 +27,8 @@ public class MyUserDetails implements UserDetails {
         else if (this.user.getRole().getRole().equals(RoleType.USER))
             return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
         else if (this.user.getRole().getRole().equals(RoleType.STAFF))
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_DEVELOPER"));
+            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_STAFF"));
+
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
     }
 

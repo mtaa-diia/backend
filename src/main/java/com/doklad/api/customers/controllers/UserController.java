@@ -4,6 +4,7 @@ import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.dto.UserDTO;
 import com.doklad.api.customers.utility.enums.RoleType;
+import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

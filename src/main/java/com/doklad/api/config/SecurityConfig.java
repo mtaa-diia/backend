@@ -15,13 +15,12 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import com.doklad.api.config.JWTFilter;
+
 
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter  {
-
 
     private final MyUserDetailService myUserDetailService;
     private final JWTFilter jwtFilter;
@@ -32,34 +31,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
         this.jwtFilter = jwtFilter;
     }
 
+
     @Override
-    public void configure(HttpSecurity http) throws Exception {
+    protected void configure(HttpSecurity http) throws Exception {
         http.headers().cacheControl();
 
-        http.
-                csrf().disable()
+        http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasRole("USER")
-                .antMatchers("/auth/**", "/error").permitAll()
-                .anyRequest().hasAnyRole("USER", "ADMIN")
+                .antMatchers("/api/admins/**").hasRole("ADMIN")
+                .antMatchers("/api/users/**").hasRole("USER")
+                .antMatchers("/api/auth/**", "/api/v1/user-data/**", "/error").permitAll()
+                .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and()
-                .formLogin().loginPage("/auth/login")
-                .loginProcessingUrl("/process_login")
-                .defaultSuccessUrl("/hello", true)
-                .failureUrl("/auth/login?error")
+                    .formLogin().loginPage("/auth/login")
+                    .loginProcessingUrl("/process_login")
+                    .defaultSuccessUrl("/hello", true)
+                    .failureUrl("/auth/login?error")
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login")
+                .logoutSuccessUrl("/api/auth/login")
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.cors();
-
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtFilter,  UsernamePasswordAuthenticationFilter.class);
     }
+
 
 
     @Override

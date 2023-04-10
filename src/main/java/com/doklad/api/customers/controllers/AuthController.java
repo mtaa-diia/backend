@@ -5,7 +5,6 @@ import com.doklad.api.customers.dto.AuthenticationDTO;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.security.JWTUtil;
-import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,8 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.annotation.Validated;
-
+import javax.validation.Valid;
 import java.util.Collection;
 import java.util.Optional;
 
@@ -48,6 +46,8 @@ public class AuthController {
 
         String jwtToken = "";
 
+        System.out.println(SecurityContextHolder.getContext().getAuthentication());
+
         Optional<User> authUser = userService.findByUsername(authenticationDTO.getUsername());
 
         // Binding of errors from DTO
@@ -59,6 +59,7 @@ public class AuthController {
         try {
             authenticationManager.authenticate(authentication);
         } catch (BadCredentialsException exception) {
+            System.out.println("Authentication failed: " + exception);
             throw new BadCredentialsException("Incorrect username or password.");
         } finally {
             System.out.println("Authentication status:" + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());

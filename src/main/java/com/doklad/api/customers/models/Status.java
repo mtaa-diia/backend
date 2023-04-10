@@ -1,8 +1,8 @@
 package com.doklad.api.customers.models;
 
 import com.doklad.api.customers.utility.enums.StatusType;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 import java.util.Date;
 import java.util.Objects;

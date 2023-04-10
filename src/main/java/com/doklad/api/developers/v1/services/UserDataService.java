@@ -52,13 +52,13 @@ public class UserDataService {
                 email = faker.internet().emailAddress();
 
             while (password.length() >= 255 || password.length() <= 3)
-                password = faker.internet().password();
+                password = "test";
 
             user.setFirstName(firstName);
             user.setLastName(lastName);
             user.setUsername(firstName + lastName);
             user.setEmail(email);
-            user.setPassword(password);
+            user.setPassword("test123");
 
             // Create role
             Role role = new Role(RoleType.USER);

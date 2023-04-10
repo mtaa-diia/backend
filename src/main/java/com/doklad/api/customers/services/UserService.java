@@ -5,6 +5,7 @@ import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.repo.UserRepo;
 import com.doklad.api.customers.utility.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Optional;
@@ -15,10 +16,12 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepo userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepository) {
+    public UserService(UserRepo userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     public List<User> findAll() {
@@ -38,6 +41,7 @@ public class UserService {
 
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 
