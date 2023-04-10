@@ -1,6 +1,4 @@
 package com.doklad.api.customers.models;
-
-import com.doklad.api.customers.utility.enums.StatusType;
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;

@@ -2,9 +2,7 @@ package com.doklad.api.developers.v1.controllers;
 
 import com.doklad.api.customers.dto.DocumentDTO;
 import com.doklad.api.customers.models.Document;
-import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.services.DocumentService;
-import com.doklad.api.customers.utility.enums.StatusType;
 import com.doklad.api.developers.v1.services.DocumentDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
+
 @RestController
 @RequestMapping("/api/v1/document-data")
 public class DocumentDataController {
@@ -36,7 +35,7 @@ public class DocumentDataController {
     public ResponseEntity<List<DocumentDTO>> createDocument(@RequestParam(name = "count", defaultValue = "1") int count) {
         List<Document> documents = documentDataService.generateDocumentNumber(count);
 
-        List<DocumentDTO> documentDTOS = documents.stream().map(this::convertToDto).toList();
+        List<DocumentDTO> documentDTOS = documents.stream().map(this::convertToDto).collect(Collectors.toList());
 
 
         documents.stream().forEach(documentService::save);

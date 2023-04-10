@@ -1,5 +1,4 @@
 package com.doklad.api.customers.models;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;

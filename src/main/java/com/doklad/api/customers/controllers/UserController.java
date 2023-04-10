@@ -1,8 +1,8 @@
 package com.doklad.api.customers.controllers;
 
-import com.doklad.api.customers.models.Role;
-import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.dto.UserDTO;
+import com.doklad.api.customers.models.User;
+import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.enums.RoleType;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -13,18 +13,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-
-import com.doklad.api.customers.models.User;
 
 
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-
     private final UserService userService;
     private final ModelMapper modelMapper;
-
 
     @Autowired
     public UserController(UserService userService, ModelMapper modelMapper) {
@@ -69,7 +64,7 @@ public class UserController {
         Optional<User> user = userService.findById(id);
         User updatedUser = convertToEntity(userDTO);
 
-        if(user.isEmpty())
+        if (user.isEmpty())
             throw new UserNotFoundException("User with id " + id.toString() + " was not found");
 
         UserDTO updateUserDTO = convertToDto(userService.update(updatedUser));
