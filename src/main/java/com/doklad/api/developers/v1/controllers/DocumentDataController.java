@@ -3,6 +3,7 @@ package com.doklad.api.developers.v1.controllers;
 import com.doklad.api.customers.dto.DocumentDTO;
 import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.services.DocumentService;
+import com.doklad.api.developers.v1.dto.DocumentDataDTO;
 import com.doklad.api.developers.v1.services.DocumentDataService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,18 +33,19 @@ public class DocumentDataController {
 
 
     @GetMapping("/create")
-    public ResponseEntity<List<DocumentDTO>> createDocument(@RequestParam(name = "count", defaultValue = "1") int count) {
+    public ResponseEntity<List<DocumentDataDTO>> createDocument(@RequestParam(name = "count", defaultValue = "1") int count) {
         List<Document> documents = documentDataService.generateDocumentNumber(count);
 
-        List<DocumentDTO> documentDTOS = documents.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<DocumentDataDTO> documentDTOS = documents.stream().map(this::convertToDto).collect(Collectors.toList());
 
-        documents.stream().forEach(documentService::save);
+        documents.forEach(this.documentDataService::save);
+
         return ResponseEntity.ok(documentDTOS);
     }
 
 
-    private DocumentDTO convertToDto(Document document) {
-        return modelMapper.map(document, DocumentDTO.class);
+    private DocumentDataDTO convertToDto(Document document) {
+        return modelMapper.map(document, DocumentDataDTO.class);
     }
 
 }

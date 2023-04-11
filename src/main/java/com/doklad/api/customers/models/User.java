@@ -46,6 +46,9 @@ public class User {
     @JsonBackReference
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Document> documents;
+
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -119,6 +122,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 
     public Date getCreatedAt() {

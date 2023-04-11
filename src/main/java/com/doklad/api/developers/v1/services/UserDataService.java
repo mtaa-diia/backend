@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.IntStream;
 
 @Service
@@ -76,4 +77,12 @@ public class UserDataService {
         return users;
     }
 
+    public Optional<User> findById(long number) {
+        return userService.findById(number);
+    }
+
+    public void update(User user) {
+        user.setUpdatedAt(new Date());
+        userService.update(user);
+    }
 }
