@@ -37,7 +37,6 @@ public class DocumentDataController {
 
         List<DocumentDTO> documentDTOS = documents.stream().map(this::convertToDto).collect(Collectors.toList());
 
-
         documents.stream().forEach(documentService::save);
         return ResponseEntity.ok(documentDTOS);
     }

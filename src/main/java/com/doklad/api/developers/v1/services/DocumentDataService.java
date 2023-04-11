@@ -32,16 +32,15 @@ public class DocumentDataService {
 
     @Transactional
     public List<Document> generateDocumentNumber(int count) {
-        int number = faker.number().numberBetween(1, 1000);
+        long number = faker.number().numberBetween(1, 1000);
         List<Document> documents = new ArrayList<>();
-        ObjectMapper mapper = new ObjectMapper();
 
-        Optional<User> user = userRepo.findById((long) number);
+        Optional<User> user = userRepo.findById(number);
 
         if (user.isEmpty())
             return Collections.emptyList();
 
-        IntStream.range(1, count).forEach(i -> {
+        IntStream.range(0, count).forEach(i -> {
             String content = faker.lorem().paragraph();
             String description = faker.lorem().sentence();
             String title = faker.lorem().sentence();
