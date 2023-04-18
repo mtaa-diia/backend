@@ -94,7 +94,8 @@ public class DocumentController {
     }
 
     private DocumentDTO convertToDto(Document document) {
-        return modelMapper.map(document, DocumentDTO.class);
+        return new DocumentDTO(document.getId(), document.getContent(), document.getDescription(), document.getTitle(), document.getUser().getId(), document.getStatus().getStatus());
+
     }
 
     private Document convertToEntity(DocumentDTO documentDTO) {

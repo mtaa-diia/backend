@@ -2,7 +2,11 @@ package com.doklad.api.customers.dto;
 
 import com.doklad.api.customers.utility.enums.StatusType;
 
+import java.util.Objects;
+
 public class DocumentDTO {
+
+    private Long id;
     private String content;
     private String description;
     private String title;
@@ -13,7 +17,8 @@ public class DocumentDTO {
     public DocumentDTO() {
     }
 
-    public DocumentDTO(String content, String description, String title, Long user, StatusType status) {
+    public DocumentDTO(Long id, String content, String description, String title, Long user, StatusType status) {
+        this.id = id;
         this.content = content;
         this.description = description;
         this.title = title;
@@ -21,6 +26,9 @@ public class DocumentDTO {
         this.status = status;
     }
 
+    public Long getId() {
+        return id;
+    }
 
     public String getContent() {
         return content;
@@ -60,5 +68,29 @@ public class DocumentDTO {
 
     public void setStatus(StatusType status) {
         this.status = status;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof DocumentDTO that)) return false;
+        return Objects.equals(id, that.id) && Objects.equals(content, that.content) && Objects.equals(description, that.description) && Objects.equals(title, that.title) && Objects.equals(user, that.user) && status == that.status;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, content, description, title, user, status);
+    }
+
+    @Override
+    public String toString() {
+        return "DocumentDTO{" +
+                "id=" + id +
+                ", content='" + content + '\'' +
+                ", description='" + description + '\'' +
+                ", title='" + title + '\'' +
+                ", user=" + user +
+                ", status=" + status +
+                '}';
     }
 }
