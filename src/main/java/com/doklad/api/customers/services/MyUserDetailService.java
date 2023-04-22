@@ -5,6 +5,7 @@ import com.doklad.api.customers.repo.UserRepo;
 import com.doklad.api.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -32,6 +33,7 @@ public class MyUserDetailService implements UserDetailsService {
 
         MyUserDetails myUserDetails = new MyUserDetails(user.get());
         System.out.println("My Role: " + myUserDetails.getAuthorities());
-        return new MyUserDetails(user.get());
+
+        return myUserDetails;
     }
 }

@@ -6,8 +6,10 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 public class MyUserDetails implements UserDetails {
 
@@ -20,12 +22,22 @@ public class MyUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (this.user.getRole().getRole().equals(RoleType.ADMIN))
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        else if (this.user.getRole().getRole().equals(RoleType.USER))
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
-        else if (this.user.getRole().getRole().equals(RoleType.STAFF))
-            return Collections.singletonList(new SimpleGrantedAuthority("ROLE_STAFF"));
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (this.user.getRole().getRole().equals(RoleType.ADMIN)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_STAFF"));
+            return authorities;
+
+        } else if (this.user.getRole().getRole().equals(RoleType.USER)){
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+        return authorities;
+        }
+        else if (this.user.getRole().getRole().equals(RoleType.STAFF)) {
+            authorities.add(new SimpleGrantedAuthority("ROLE_USER"));
+            authorities.add(new SimpleGrantedAuthority("ROLE_STAFF"));
+            return authorities;
+        }
 
         return Collections.singletonList(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
     }

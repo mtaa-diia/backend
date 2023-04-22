@@ -53,7 +53,7 @@ public class UserDataService {
                 email = faker.internet().emailAddress();
 
             while (password.length() >= 255 || password.length() <= 3)
-                password = "test";
+                password = "test123";
 
             user.setFirstName(firstName);
             user.setLastName(lastName);

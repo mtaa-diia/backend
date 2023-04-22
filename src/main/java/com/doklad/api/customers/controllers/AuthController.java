@@ -39,28 +39,31 @@ public class AuthController {
     // Login api method
     @PostMapping("/login")
     public ResponseEntity<String> login(@RequestBody @Valid AuthenticationDTO authenticationDTO, BindingResult bindingResult) {
-        Authentication authentication =
-                new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(), authenticationDTO.getPassword());
 
         String jwtToken = "";
-
-        System.out.println(SecurityContextHolder.getContext().getAuthentication());
-
         Optional<User> authUser = userService.findByUsername(authenticationDTO.getUsername());
 
-        // Binding of errors from DTO
-        if (bindingResult.hasErrors() || authUser.isEmpty()) {
-            return new ResponseEntity<>("Incorrect username or password.", HttpStatus.BAD_REQUEST);
-        }
 
+
+
+        System.out.println("Is user authenticated: " + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
+        System.out.println("Authorities : " + SecurityContextHolder.getContext().getAuthentication().getAuthorities());
+
+        // Binding of errors from DTO
+        if (bindingResult.hasErrors() || authUser.isEmpty())
+            return new ResponseEntity<>("Incorrect username or password.", HttpStatus.BAD_REQUEST);
+
+
+        Authentication authentication =
+                new UsernamePasswordAuthenticationToken(authenticationDTO.getUsername(), authenticationDTO.getPassword());
         // Authentication of user
         try {
             authenticationManager.authenticate(authentication);
+            System.out.println("Authentication successful: " + authentication.getAuthorities());
+            SecurityContextHolder.getContext().setAuthentication(authentication);
         } catch (BadCredentialsException exception) {
             System.out.println("Authentication failed: " + exception);
             throw new BadCredentialsException("Incorrect username or password.");
-        } finally {
-            System.out.println("Authentication status:" + SecurityContextHolder.getContext().getAuthentication().isAuthenticated());
         }
 
         // isAnonymous() - true if user is not authenticated
