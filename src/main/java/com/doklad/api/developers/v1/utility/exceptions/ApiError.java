@@ -11,6 +11,7 @@ public class ApiError {
 
     private Date timestamp;
 
+
     public ApiError(String message, HttpStatus status) {
         this.message = message;
         this.status = status;
