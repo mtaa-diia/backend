@@ -1,7 +1,7 @@
 package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Notification;
-import com.doklad.api.customers.repo.NotificationRepo;
+import com.doklad.api.customers.repo.NotificationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,36 +14,36 @@ import java.util.Date;
 @Transactional(readOnly = true)
 public class NotificationService {
 
-    private final NotificationRepo notificationRepo;
+    private final NotificationRepository notificationRepository;
 
     @Autowired
-    public NotificationService(NotificationRepo notificationRepo) {
-        this.notificationRepo = notificationRepo;
+    public NotificationService(NotificationRepository notificationRepository) {
+        this.notificationRepository = notificationRepository;
     }
 
     public List<Notification> findAll() {
-        return notificationRepo.findAll();
+        return notificationRepository.findAll();
     }
 
     public Optional<Notification> findById(Long id) {
-        return notificationRepo.findById(id);
+        return notificationRepository.findById(id);
     }
 
     @Transactional
     public Notification save(Notification notification) {
         notification.setCreatedAt(new Date());
         notification.setUpdatedAt(new Date());
-        return notificationRepo.save(notification);
+        return notificationRepository.save(notification);
     }
 
     @Transactional
     public void update(Notification notification) {
         notification.setUpdatedAt(new Date());
-        notificationRepo.save(notification);
+        notificationRepository.save(notification);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        notificationRepo.deleteById(id);
+        notificationRepository.deleteById(id);
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -37,12 +38,12 @@ public class DocumentController {
     @GetMapping("/")
     public ResponseEntity<List<DocumentDTO>> findAll() {
         List<Document> documents = documentService.findAll();
+        List<DocumentDTO> documentDTOs = new ArrayList<>();
 
         if (documents.isEmpty())
             throw new DocumentNotFoundException("No documents were found");
 
-
-        List<DocumentDTO> documentDTOs = documents.stream().map(this.documentMapper::convertToDto).collect(Collectors.toList());
+        documentDTOs = documents.stream().map(this.documentMapper::convertToDto).collect(Collectors.toList());
 
         return ResponseEntity.ok(documentDTOs);
     }

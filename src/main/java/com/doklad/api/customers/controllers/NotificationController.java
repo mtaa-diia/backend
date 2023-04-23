@@ -1,6 +1,7 @@
 package com.doklad.api.customers.controllers;
 
 import com.doklad.api.customers.dto.NotificationDTO;
+import com.doklad.api.customers.mappers.NotificationMapper;
 import com.doklad.api.customers.models.Notification;
 import com.doklad.api.customers.services.NotificationService;
 import com.doklad.api.customers.utility.exception.notificationExceptions.NotificationNotFoundException;
@@ -19,18 +20,18 @@ import java.util.stream.Collectors;
 public class NotificationController {
 
     private final NotificationService notificationService;
-    private final ModelMapper modelMapper;
+    private final NotificationMapper notificationMapper;
 
     @Autowired
-    public NotificationController(NotificationService notificationService, ModelMapper modelMapper) {
+    public NotificationController(NotificationService notificationService, NotificationMapper notificationMapper) {
         this.notificationService = notificationService;
-        this.modelMapper = modelMapper;
+        this.notificationMapper = notificationMapper;
     }
 
     @GetMapping("/")
     public ResponseEntity<List<NotificationDTO>> findAll() {
         List<Notification> notifications = notificationService.findAll();
-        List<NotificationDTO> notificationDTOs = notifications.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<NotificationDTO> notificationDTOs = notifications.stream().map(this.notificationMapper::convertToDto).collect(Collectors.toList());
 
         return ResponseEntity.ok(notificationDTOs);
     }
@@ -42,7 +43,7 @@ public class NotificationController {
         if (notification.isEmpty())
             throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
-        return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        return notification.map(value -> ResponseEntity.ok(this.notificationMapper.convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
@@ -54,7 +55,7 @@ public class NotificationController {
         if (notification.isEmpty())
             throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
-        return notification.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        return notification.map(value -> ResponseEntity.ok(this.notificationMapper.convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
 
     }
 
@@ -68,13 +69,5 @@ public class NotificationController {
         notificationService.deleteById(notification.get().getId());
 
         return ResponseEntity.ok(HttpStatus.OK);
-    }
-
-    private NotificationDTO convertToDto(Notification notification) {
-        return modelMapper.map(notification, NotificationDTO.class);
-    }
-
-    private Notification convertToEntity(NotificationDTO notificationDTO) {
-        return modelMapper.map(notificationDTO, Notification.class);
     }
 }

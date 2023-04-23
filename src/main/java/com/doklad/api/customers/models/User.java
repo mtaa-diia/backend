@@ -49,6 +49,9 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Document> documents;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Notification> notifications;
+
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -181,6 +184,14 @@ public class User {
 
     public void setUserOrders(List<Order> userOrders) {
         this.userOrders = userOrders;
+    }
+
+    public List<Notification> getNotifications() {
+        return notifications;
+    }
+
+    public void setNotifications(List<Notification> notifications) {
+        this.notifications = notifications;
     }
 
     @Override

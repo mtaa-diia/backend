@@ -1,5 +1,6 @@
 package com.doklad.api.customers.utility.exception.controllerExcxaptions;
 
+import com.doklad.api.customers.utility.exception.userExceptions.UserAlreadyExistException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import com.doklad.api.developers.v1.utility.exceptions.ApiError;
 import org.springframework.http.HttpStatus;
@@ -14,6 +15,12 @@ public class UserResponseEntityExceptionHandler {
     public ResponseEntity<ApiError> handleUserNotFoundException(UserNotFoundException ex) {
         ApiError apiError = new ApiError(ex.getMessage(), HttpStatus.NOT_FOUND);
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {UserAlreadyExistException.class})
+    public ResponseEntity<ApiError> handleUserAlreadyExistException(UserAlreadyExistException ex) {
+        ApiError apiError = new ApiError(ex.getMessage(), HttpStatus.CONFLICT);
+        return new ResponseEntity<>(apiError, HttpStatus.CONFLICT);
     }
 
 }

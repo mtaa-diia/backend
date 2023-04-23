@@ -13,6 +13,7 @@ public class Notification {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private Long id;
 
     @Column(name = "title")
@@ -37,19 +38,18 @@ public class Notification {
     @Temporal(TemporalType.TIMESTAMP)
     private Date readAt;
 
-    @Column(name = "read_status")
-    private Boolean readStatus;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
+
 
     public Notification() {
     }
 
-    public Notification(String title, String message, Date createdAt, Date updatedAt, Date readAt, Boolean readStatus) {
+    public Notification(String title, String message) {
         this.title = title;
         this.message = message;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.readAt = readAt;
-        this.readStatus = readStatus;
+
     }
 
     public Long getId() {
@@ -81,6 +81,14 @@ public class Notification {
         this.createdAt = createdAt;
     }
 
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
     public Date getUpdatedAt() {
         return updatedAt;
     }
@@ -97,24 +105,16 @@ public class Notification {
         this.readAt = readAt;
     }
 
-    public Boolean getReadStatus() {
-        return readStatus;
-    }
-
-    public void setReadStatus(Boolean readStatus) {
-        this.readStatus = readStatus;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Notification that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(message, that.message) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(readAt, that.readAt) && Objects.equals(readStatus, that.readStatus);
+        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(message, that.message) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(readAt, that.readAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, message, createdAt, updatedAt, readAt, readStatus);
+        return Objects.hash(id, title, message, createdAt, updatedAt, readAt);
     }
 
     @Override
@@ -126,7 +126,6 @@ public class Notification {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", readAt=" + readAt +
-                ", readStatus=" + readStatus +
                 '}';
     }
 }
