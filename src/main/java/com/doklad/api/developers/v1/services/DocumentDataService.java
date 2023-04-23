@@ -3,6 +3,7 @@ package com.doklad.api.developers.v1.services;
 import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.models.User;
+import com.doklad.api.customers.repo.DocumentRepo;
 import com.doklad.api.customers.repo.UserRepo;
 import com.doklad.api.customers.utility.enums.StatusType;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -11,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Service
@@ -22,30 +20,33 @@ import java.util.stream.IntStream;
 public class DocumentDataService {
 
     private final Faker faker;
-    private final UserRepo userRepo;
+
+    private final UserDataService userDataService;
+    private final DocumentRepo documentRepo;
 
     @Autowired
-    public DocumentDataService(Faker faker, UserRepo userRepo) {
+    public DocumentDataService(Faker faker, UserDataService userDataService, DocumentRepo documentRepo, UserRepo userRepo){
         this.faker = faker;
-        this.userRepo = userRepo;
+        this.userDataService = userDataService;
+        this.documentRepo = documentRepo;
     }
 
     @Transactional
     public List<Document> generateDocumentNumber(int count) {
-        long number = faker.number().numberBetween(1, 1000);
+
+        long countUsers = userDataService.count();
+        long number = faker.number().numberBetween(1, countUsers);
         List<Document> documents = new ArrayList<>();
 
-        Optional<User> user = userRepo.findById(number);
+        Optional<User> user = userDataService.findById(number);
 
-        if (user.isEmpty())
-            return Collections.emptyList();
 
         IntStream.range(0, count).forEach(i -> {
             String content = faker.lorem().paragraph();
             String description = faker.lorem().sentence();
             String title = faker.lorem().sentence();
             Status status = new Status(StatusType.PENDING);
-
+            Document document = new Document();
 
             while (description.length() >= 255 || title.length() >= 255)
                 title = faker.lorem().sentence();
@@ -53,10 +54,24 @@ public class DocumentDataService {
             while (description.length() >= 999)
                 description = faker.lorem().sentence();
 
-            Document document = new Document(content, description, title, status, user.get());
+            document = new Document(content, description, title, status, user.get());
             documents.add(document);
         });
 
+        documents.forEach(document -> document.setUser(user.get()));
+        user.get().setDocuments(documents);
+        userDataService.update(user.get());
+
+
         return documents;
+    }
+
+    @Transactional
+    public void save(Document document) {
+        document.setStatus(new Status(StatusType.PENDING));
+        document.setCreatedAt(new Date());
+        document.setUpdatedAt(new Date());
+
+        documentRepo.save(document);
     }
 }

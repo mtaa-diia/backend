@@ -22,7 +22,7 @@ public class Document {
     @Size(min = 3, max = 255, message = "Title must be between 3 and 50 characters")
     private String title;
 
-    @Column(columnDefinition = "jsonb")
+    @Column(name = "content")
     @NotEmpty(message = "Content is required")
     @Size(min = 3, max = 999, message = "Content must be between 3 and 999 characters")
     private String content;

@@ -46,6 +46,9 @@ public class User {
     @JsonBackReference
     private Role role;
 
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Document> documents;
+
 
     @Column(name = "created_at")
     @Temporal(TemporalType.TIMESTAMP)
@@ -67,6 +70,16 @@ public class User {
 
 
     public User(String firstName, String lastName, String username, String password, String email, Role role) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
+    public User(Long id, String firstName, String lastName, String username, String password, String email, Role role) {
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.username = username;
@@ -119,6 +132,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public List<Document> getDocuments() {
+        return documents;
+    }
+
+    public void setDocuments(List<Document> documents) {
+        this.documents = documents;
     }
 
     public Date getCreatedAt() {

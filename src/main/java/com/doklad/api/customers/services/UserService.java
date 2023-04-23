@@ -18,12 +18,14 @@ import java.util.Date;
 public class UserService {
 
     private final UserRepo userRepository;
+    private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepository, PasswordEncoder passwordEncoder) {
+    public UserService(UserRepo userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.roleService = roleService;
     }
 
     public List<User> findAll() {
@@ -38,11 +40,18 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public long count() {
+        return userRepository.count();
+    }
+
     @Transactional
     public User save(User user) {
 
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
+        user.setRole(new Role(RoleType.USER));
+
+
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

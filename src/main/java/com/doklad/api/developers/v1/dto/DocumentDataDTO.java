@@ -8,14 +8,14 @@ public class DocumentDataDTO {
     private String content;
     private String description;
     private String title;
-    private Long user;
+    private UserDataDTOId user;
 
     private StatusType status;
 
     public DocumentDataDTO() {
     }
 
-    public DocumentDataDTO(String content, String description, String title, Long user, StatusType status) {
+    public DocumentDataDTO(String content, String description, String title, UserDataDTOId user, StatusType status) {
         this.content = content;
         this.description = description;
         this.title = title;
@@ -47,11 +47,11 @@ public class DocumentDataDTO {
         this.title = title;
     }
 
-    public Long getUser() {
+    public UserDataDTOId getUser() {
         return user;
     }
 
-    public void setUser(Long user) {
+    public void setUser(UserDataDTOId user) {
         this.user = user;
     }
 
@@ -81,7 +81,7 @@ public class DocumentDataDTO {
                 "content='" + content + '\'' +
                 ", description='" + description + '\'' +
                 ", title='" + title + '\'' +
-                ", user=" + user +
+                ", user=" + user.getId() +
                 ", status=" + status +
                 '}';
     }
