@@ -1,11 +1,13 @@
 package com.doklad.api.customers.controllers;
 
 import com.doklad.api.customers.dto.DocumentDTO;
+import com.doklad.api.customers.mappers.DocumentMapper;
 import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
+import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -22,62 +24,66 @@ public class DocumentController {
     private final DocumentService documentService;
     private final UserService userService;
 
-    private final ModelMapper modelMapper;
+    private final DocumentMapper documentMapper;
 
     @Autowired
-    public DocumentController(DocumentService documentService, ModelMapper modelMapper, UserService userService) {
+    public DocumentController(DocumentService documentService, DocumentMapper documentMapper, UserService userService) {
         this.documentService = documentService;
         this.userService = userService;
-        this.modelMapper = modelMapper;
+        this.documentMapper = documentMapper;
     }
 
     @GetMapping("/")
     public ResponseEntity<List<DocumentDTO>> findAll() {
-        List<Document> users = documentService.findAll();
-        List<DocumentDTO> userDTOs = users.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<Document> documents = documentService.findAll();
 
-        return ResponseEntity.ok(userDTOs);
+        if (documents.isEmpty())
+            throw new DocumentNotFoundException("No documents were found");
+
+
+        List<DocumentDTO> documentDTOs = documents.stream().map(this.documentMapper::convertToDto).collect(Collectors.toList());
+
+        return ResponseEntity.ok(documentDTOs);
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<DocumentDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Document> document = documentService.findById(id);
+        DocumentDTO documentDTO = new DocumentDTO();
 
         if (document.isEmpty())
             throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
 
-        return ResponseEntity.ok(convertToDto(document.get()));
+        documentDTO = documentMapper.convertToDto(document.get());
+
+        return ResponseEntity.ok(documentDTO);
     }
 
-    // Write exception handler for update method
     @PostMapping("/")
     public ResponseEntity<DocumentDTO> save(@RequestBody DocumentDTO documentDTO) {
+        long userId = documentDTO.getUserId();
+        Optional<User> user = userService.findById(userId);
 
-        Optional<User> user = userService.findById(documentDTO.getUser());
-
-        if (user.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        Document document = new Document();
-        document.setUser(user.get());
-        document = convertToEntity(documentDTO);
-        document = documentService.save(document);
-
-        return ResponseEntity.ok(convertToDto(document));
+        return ResponseEntity.ok(documentDTO);
     }
 
 
-    // Write exception handler for update method
-    @PutMapping("/{id}")
-    public ResponseEntity<DocumentDTO> update(@PathVariable(name = "id") Long id) {
-
+    @PutMapping("/")
+    public ResponseEntity<DocumentDTO> update(@RequestBody DocumentDTO documentDTO) {
+        long id = documentDTO.getId();
         Optional<Document> document = documentService.findById(id);
+        Document updatedDocument = documentMapper.convertToEntity(documentDTO);
+        Optional<User> user = userService.findById(documentDTO.getUserId());
+
+        if (user.isEmpty())
+            throw new UserNotFoundException("User with id " + documentDTO.getUserId().toString() + " was not found");
 
         if (document.isEmpty())
-            throw new DocumentNotFoundException("Document with id " + id.toString() + " was not found");
+            throw new DocumentNotFoundException("Document with id " + id + " was not found");
 
-        return document.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        documentService.update(updatedDocument);
 
+        return ResponseEntity.ok(documentDTO);
     }
 
     // Write exception handler for delete method
@@ -93,12 +99,4 @@ public class DocumentController {
         return ResponseEntity.ok().build();
     }
 
-    private DocumentDTO convertToDto(Document document) {
-        return new DocumentDTO(document.getId(), document.getContent(), document.getDescription(), document.getTitle(), document.getUser().getId(), document.getStatus().getStatus());
-
-    }
-
-    private Document convertToEntity(DocumentDTO documentDTO) {
-        return modelMapper.map(documentDTO, Document.class);
-    }
 }

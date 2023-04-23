@@ -38,9 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/admins/**", "/api/v1/user-data/**", "/api/v1/document-data/**", "/api/users/**").hasRole("ADMIN")
-                .antMatchers("/api/users/**").hasRole("USER")
-                .antMatchers("/api/v1/user-data/**").hasRole("ANONYMOUS")
+                .antMatchers("/api/admins/**", "/api/v1/user-data/**", "/api/v1/document-data/create", "/api/users/**", "/api/documents/**").hasRole("ADMIN")
+                .antMatchers("/api/users/**", "/api/documents/**").hasRole("USER")
+                .antMatchers("/api/documents/**").hasRole("STAFF")
+                .antMatchers("**/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui/index.html").hasRole("ANONYMOUS")
                 .antMatchers("/api/auth/**", "/error").permitAll()
                 .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and()

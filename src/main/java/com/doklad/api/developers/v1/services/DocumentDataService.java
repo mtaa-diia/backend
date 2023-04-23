@@ -33,19 +33,20 @@ public class DocumentDataService {
 
     @Transactional
     public List<Document> generateDocumentNumber(int count) {
-        long number = faker.number().numberBetween(1, 1000);
+
+        long countUsers = userDataService.count();
+        long number = faker.number().numberBetween(1, countUsers);
         List<Document> documents = new ArrayList<>();
 
         Optional<User> user = userDataService.findById(number);
 
-        if (user.isEmpty())
-            return Collections.emptyList();
 
         IntStream.range(0, count).forEach(i -> {
             String content = faker.lorem().paragraph();
             String description = faker.lorem().sentence();
             String title = faker.lorem().sentence();
             Status status = new Status(StatusType.PENDING);
+            Document document = new Document();
 
             while (description.length() >= 255 || title.length() >= 255)
                 title = faker.lorem().sentence();
@@ -53,11 +54,13 @@ public class DocumentDataService {
             while (description.length() >= 999)
                 description = faker.lorem().sentence();
 
-            Document document = new Document(content, description, title, status, user.get());
+            document = new Document(content, description, title, status, user.get());
             documents.add(document);
         });
 
         documents.forEach(document -> document.setUser(user.get()));
+        user.get().setDocuments(documents);
+        userDataService.update(user.get());
 
 
         return documents;

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user-data/")
+@RequestMapping("/api/v1/users-data/")
 public class UserDataController {
 
     private final UserDataService userDataService;
@@ -32,9 +32,9 @@ public class UserDataController {
         List<User> users = userDataService.generateUsers(count);
 
         // Save users to database
-        users.forEach(userService::save);
+        users.forEach(userDataService::save);
 
-        return new ResponseEntity<>(userDataService.generateUsers(count), HttpStatus.OK);
+        return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
 

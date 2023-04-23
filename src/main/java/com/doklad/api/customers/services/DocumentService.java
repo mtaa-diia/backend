@@ -1,7 +1,9 @@
 package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Document;
+import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.repo.DocumentRepo;
+import com.doklad.api.customers.utility.enums.StatusType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,12 +32,14 @@ public class DocumentService {
     public Document save(Document document) {
         document.setCreatedAt(new Date());
         document.setUpdatedAt(new Date());
+        document.setStatus(new Status(StatusType.PENDING));
         return documentRepo.save(document);
     }
 
     @Transactional
     public void update(Document document) {
         document.setUpdatedAt(new Date());
+        document.setStatus(new Status(StatusType.PENDING));
         documentRepo.save(document);
     }
 

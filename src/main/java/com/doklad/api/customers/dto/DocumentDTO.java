@@ -10,19 +10,27 @@ public class DocumentDTO {
     private String content;
     private String description;
     private String title;
-    private Long user;
+    private Long userId;
 
     private StatusType status;
 
     public DocumentDTO() {
     }
 
-    public DocumentDTO(Long id, String content, String description, String title, Long user, StatusType status) {
+    public DocumentDTO(Long id, String content, String description, String title, Long userId, StatusType status) {
         this.id = id;
         this.content = content;
         this.description = description;
         this.title = title;
-        this.user = user;
+        this.userId = userId;
+        this.status = status;
+    }
+
+    public DocumentDTO(String content, String description, String title, Long userId, StatusType status) {
+        this.content = content;
+        this.description = description;
+        this.title = title;
+        this.userId = userId;
         this.status = status;
     }
 
@@ -54,12 +62,13 @@ public class DocumentDTO {
         this.title = title;
     }
 
-    public Long getUser() {
-        return user;
+
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setUser(Long user) {
-        this.user = user;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public StatusType getStatus() {
@@ -74,12 +83,12 @@ public class DocumentDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DocumentDTO that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(content, that.content) && Objects.equals(description, that.description) && Objects.equals(title, that.title) && Objects.equals(user, that.user) && status == that.status;
+        return Objects.equals(id, that.id) && Objects.equals(content, that.content) && Objects.equals(description, that.description) && Objects.equals(title, that.title) && Objects.equals(userId, that.userId) && status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, content, description, title, user, status);
+        return Objects.hash(id, content, description, title, userId, status);
     }
 
     @Override
@@ -89,7 +98,7 @@ public class DocumentDTO {
                 ", content='" + content + '\'' +
                 ", description='" + description + '\'' +
                 ", title='" + title + '\'' +
-                ", user=" + user +
+                ", user=" + userId +
                 ", status=" + status +
                 '}';
     }

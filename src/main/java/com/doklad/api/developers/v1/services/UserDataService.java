@@ -2,6 +2,7 @@ package com.doklad.api.developers.v1.services;
 
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.models.User;
+import com.doklad.api.customers.repo.UserRepo;
 import com.doklad.api.customers.services.RoleService;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.enums.RoleType;
@@ -10,10 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Service
@@ -21,14 +19,14 @@ import java.util.stream.IntStream;
 public class UserDataService {
 
     private final Faker faker;
-    private final UserService userService;
     private final RoleService roleService;
+    private final UserRepo userRepo;
 
     @Autowired
-    public UserDataService(Faker faker, UserService userService, RoleService roleService) {
+    public UserDataService(Faker faker, RoleService roleService, UserRepo userRepo) {
         this.faker = faker;
-        this.userService = userService;
         this.roleService = roleService;
+        this.userRepo = userRepo;
     }
 
     @Transactional
@@ -63,13 +61,9 @@ public class UserDataService {
 
             // Create role
             Role role = new Role(RoleType.USER);
+            role.setUsers(Collections.singletonList(user));
             roleService.save(role);
-
-            // Set role
             user.setRole(role);
-
-            user.setCreatedAt(new Date());
-            user.setUpdatedAt(new Date());
             users.add(user);
         });
 
@@ -77,12 +71,30 @@ public class UserDataService {
         return users;
     }
 
-    public Optional<User> findById(long number) {
-        return userService.findById(number);
+    public List<User> findAll() {
+        return userRepo.findAll();
     }
 
+    @Transactional
+    public User save(User user) {
+        user.setCreatedAt(new Date());
+        user.setUpdatedAt(new Date());
+        return userRepo.save(user);
+    }
+
+    public long count() {
+        return userRepo.count();
+    }
+
+    public Optional<User> findById(long number) {
+        return userRepo.findById(number);
+    }
+
+
+
+    @Transactional
     public void update(User user) {
         user.setUpdatedAt(new Date());
-        userService.update(user);
+        userRepo.save(user);
     }
 }
