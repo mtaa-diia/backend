@@ -6,6 +6,7 @@ import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.services.UserService;
+import com.doklad.api.customers.utility.exception.documentExceptions.DocumentAlreadyExistException;
 import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import org.modelmapper.ModelMapper;
@@ -63,8 +64,22 @@ public class DocumentController {
     public ResponseEntity<DocumentDTO> save(@RequestBody DocumentDTO documentDTO) {
         long userId = documentDTO.getUserId();
         Optional<User> user = userService.findById(userId);
+        Optional<Document> document = documentService.findByTitleAndContentAndDescription(documentDTO.getTitle(), documentDTO.getContent(), documentDTO.getDescription());
+        Document newDocument = new Document();
+        DocumentDTO savedDocumentDTO = new DocumentDTO();
 
-        return ResponseEntity.ok(documentDTO);
+        if (user.isEmpty())
+            throw new UserNotFoundException("User with id " + userId + " was not found");
+
+        if (document.isPresent())
+            throw new DocumentAlreadyExistException("Document with title " + documentDTO.getTitle() + " already exists");
+
+        newDocument = documentMapper.convertToEntity(documentDTO);
+        newDocument.setUser(user.get());
+        documentService.save(newDocument);
+        savedDocumentDTO = documentMapper.convertToDto(newDocument);
+
+        return ResponseEntity.ok(savedDocumentDTO);
     }
 
 

@@ -48,4 +48,7 @@ public class DocumentService {
         documentRepo.deleteById(id);
     }
 
+    public Optional<Document> findByTitleAndContentAndDescription(String title, String content, String description) {
+        return documentRepo.findByTitleAndContentAndDescription(title, content, description);
+    }
 }
