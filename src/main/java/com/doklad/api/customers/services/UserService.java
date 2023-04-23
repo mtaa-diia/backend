@@ -43,6 +43,7 @@ public class UserService {
 
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
+        user.setRole(new Role(RoleType.USER));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

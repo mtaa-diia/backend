@@ -78,6 +78,16 @@ public class User {
         this.role = role;
     }
 
+    public User(Long id, String firstName, String lastName, String username, String password, String email, Role role) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }

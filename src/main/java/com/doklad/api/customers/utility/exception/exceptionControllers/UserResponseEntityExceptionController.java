@@ -22,4 +22,6 @@ public class UserResponseEntityExceptionController {
         ApiError apiError = new ApiError(ex.getMessage(), HttpStatus.CONFLICT);
         return new ResponseEntity<>(apiError, apiError.getStatus());
     }
+
+
 }
