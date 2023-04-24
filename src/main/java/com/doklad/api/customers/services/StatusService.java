@@ -1,7 +1,7 @@
 package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Status;
-import com.doklad.api.customers.repo.StatusRepo;
+import com.doklad.api.customers.repo.StatusRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,37 +14,37 @@ import java.util.Optional;
 @Transactional(readOnly = true)
 public class StatusService {
 
-    private final StatusRepo statusRepo;
+    private final StatusRepository statusRepository;
 
     @Autowired
-    public StatusService(StatusRepo statusRepo) {
-        this.statusRepo = statusRepo;
+    public StatusService(StatusRepository statusRepository) {
+        this.statusRepository = statusRepository;
     }
 
     public List<Status> findAll() {
-        return statusRepo.findAll();
+        return statusRepository.findAll();
     }
 
     public Optional<Status> findById(Long id) {
-        return statusRepo.findById(id);
+        return statusRepository.findById(id);
     }
 
     @Transactional
     public Status save(Status status) {
         status.setCreatedAt(new Date());
         status.setUpdatedAt(new Date());
-        return statusRepo.save(status);
+        return statusRepository.save(status);
     }
 
     @Transactional
     public Status update(Status status) {
         status.setUpdatedAt(new Date());
-        return statusRepo.save(status);
+        return statusRepository.save(status);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        statusRepo.deleteById(id);
+        statusRepository.deleteById(id);
     }
 
 }

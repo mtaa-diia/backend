@@ -3,10 +3,9 @@ package com.doklad.api.developers.v1.services;
 import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.models.User;
-import com.doklad.api.customers.repo.DocumentRepo;
-import com.doklad.api.customers.repo.UserRepo;
+import com.doklad.api.customers.repo.DocumentRepository;
+import com.doklad.api.customers.repo.UserRepository;
 import com.doklad.api.customers.utility.enums.StatusType;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +21,13 @@ public class DocumentDataService {
     private final Faker faker;
 
     private final UserDataService userDataService;
-    private final DocumentRepo documentRepo;
+    private final DocumentRepository documentRepository;
 
     @Autowired
-    public DocumentDataService(Faker faker, UserDataService userDataService, DocumentRepo documentRepo, UserRepo userRepo){
+    public DocumentDataService(Faker faker, UserDataService userDataService, DocumentRepository documentRepository, UserRepository userRepository){
         this.faker = faker;
         this.userDataService = userDataService;
-        this.documentRepo = documentRepo;
+        this.documentRepository = documentRepository;
     }
 
     @Transactional
@@ -72,6 +71,6 @@ public class DocumentDataService {
         document.setCreatedAt(new Date());
         document.setUpdatedAt(new Date());
 
-        documentRepo.save(document);
+        documentRepository.save(document);
     }
 }

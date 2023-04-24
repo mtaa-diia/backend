@@ -29,6 +29,10 @@ public class NotificationService {
         return notificationRepository.findById(id);
     }
 
+    public Optional<Notification> findNotificationByUserId(Long id) {
+        return notificationRepository.findNotificationByUserId(id);
+    }
+
     @Transactional
     public Notification save(Notification notification) {
         notification.setCreatedAt(new Date());
@@ -37,9 +41,9 @@ public class NotificationService {
     }
 
     @Transactional
-    public void update(Notification notification) {
+    public Notification update(Notification notification) {
         notification.setUpdatedAt(new Date());
-        notificationRepository.save(notification);
+        return notificationRepository.save(notification);
     }
 
     @Transactional

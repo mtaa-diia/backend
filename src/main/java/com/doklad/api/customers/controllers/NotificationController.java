@@ -5,7 +5,6 @@ import com.doklad.api.customers.mappers.NotificationMapper;
 import com.doklad.api.customers.models.Notification;
 import com.doklad.api.customers.services.NotificationService;
 import com.doklad.api.customers.utility.exception.notificationExceptions.NotificationNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +32,9 @@ public class NotificationController {
         List<Notification> notifications = notificationService.findAll();
         List<NotificationDTO> notificationDTOs = notifications.stream().map(this.notificationMapper::convertToDto).collect(Collectors.toList());
 
+        if (notifications.isEmpty())
+            throw new NotificationNotFoundException("No notifications were found");
+
         return ResponseEntity.ok(notificationDTOs);
     }
 
@@ -47,16 +49,20 @@ public class NotificationController {
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<NotificationDTO> update(@PathVariable(name = "id") Long id) {
+    @PutMapping("/")
+    public ResponseEntity<NotificationDTO> update(@RequestBody NotificationDTO notificationDTO) {
 
-        Optional<Notification> notification = notificationService.findById(id);
+        Optional<Notification> notification = notificationService.findNotificationByUserId(notificationDTO.getUserId());
+        Notification updatedNotification;
+        NotificationDTO updatedNotificationDTO;
 
         if (notification.isEmpty())
-            throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
+            throw new NotificationNotFoundException("Notification with id " + notificationDTO.getId().toString() + " was not found");
 
-        return notification.map(value -> ResponseEntity.ok(this.notificationMapper.convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
+        updatedNotification = notificationService.update(notificationMapper.convertToEntity(notificationDTO));
+        updatedNotificationDTO = notificationMapper.convertToDto(updatedNotification);
 
+        return ResponseEntity.ok(updatedNotificationDTO);
     }
 
     @DeleteMapping("/{id}")

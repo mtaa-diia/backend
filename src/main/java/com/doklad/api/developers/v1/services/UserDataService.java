@@ -2,9 +2,8 @@ package com.doklad.api.developers.v1.services;
 
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.models.User;
-import com.doklad.api.customers.repo.UserRepo;
+import com.doklad.api.customers.repo.UserRepository;
 import com.doklad.api.customers.services.RoleService;
-import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.enums.RoleType;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,13 +19,13 @@ public class UserDataService {
 
     private final Faker faker;
     private final RoleService roleService;
-    private final UserRepo userRepo;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserDataService(Faker faker, RoleService roleService, UserRepo userRepo) {
+    public UserDataService(Faker faker, RoleService roleService, UserRepository userRepository) {
         this.faker = faker;
         this.roleService = roleService;
-        this.userRepo = userRepo;
+        this.userRepository = userRepository;
     }
 
     @Transactional
@@ -72,22 +71,22 @@ public class UserDataService {
     }
 
     public List<User> findAll() {
-        return userRepo.findAll();
+        return userRepository.findAll();
     }
 
     @Transactional
     public User save(User user) {
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
-        return userRepo.save(user);
+        return userRepository.save(user);
     }
 
     public long count() {
-        return userRepo.count();
+        return userRepository.count();
     }
 
     public Optional<User> findById(long number) {
-        return userRepo.findById(number);
+        return userRepository.findById(number);
     }
 
 
@@ -95,6 +94,6 @@ public class UserDataService {
     @Transactional
     public void update(User user) {
         user.setUpdatedAt(new Date());
-        userRepo.save(user);
+        userRepository.save(user);
     }
 }

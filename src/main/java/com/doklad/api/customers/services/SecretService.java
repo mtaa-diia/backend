@@ -1,7 +1,7 @@
 package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Secret;
-import com.doklad.api.customers.repo.SecretRepo;
+import com.doklad.api.customers.repo.SecretRepository;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,19 +14,19 @@ import java.util.Optional;
 @Service
 @Transactional(readOnly = true)
 public class SecretService {
-    private final SecretRepo secretRepo;
+    private final SecretRepository secretRepository;
 
     @Autowired
-    public SecretService(SecretRepo secretRepo) {
-        this.secretRepo = secretRepo;
+    public SecretService(SecretRepository secretRepository) {
+        this.secretRepository = secretRepository;
     }
 
     public Optional<Secret> findByValue(String secretValue) {
-        return secretRepo.findSecretByValue(secretValue);
+        return secretRepository.findSecretByValue(secretValue);
     }
 
     public List<Secret> findAll() {
-        return secretRepo.findAll();
+        return secretRepository.findAll();
     }
 
     @Transactional
@@ -35,11 +35,11 @@ public class SecretService {
         // the secret expires in 30 minutes
         secret.setExpiresAt(DateUtils.addMinutes(new Date(), 30));
 
-        return secretRepo.save(secret);
+        return secretRepository.save(secret);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        secretRepo.deleteById(id);
+        secretRepository.deleteById(id);
     }
 }

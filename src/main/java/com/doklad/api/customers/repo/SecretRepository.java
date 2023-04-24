@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SecretRepo extends JpaRepository<Secret, Long> {
+public interface SecretRepository extends JpaRepository<Secret, Long> {
     List<Secret> findSecretByDocumentId(Long documentId);
 
     Optional<Secret> findSecretByValue(String value);

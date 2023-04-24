@@ -1,11 +1,10 @@
 package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.User;
-import com.doklad.api.customers.repo.UserRepo;
+import com.doklad.api.customers.repo.UserRepository;
 import com.doklad.api.security.MyUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,10 +15,10 @@ import java.util.Optional;
 @Service
 public class MyUserDetailService implements UserDetailsService {
 
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public MyUserDetailService(UserRepo userRepository) {
+    public MyUserDetailService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
