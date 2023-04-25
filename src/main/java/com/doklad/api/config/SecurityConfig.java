@@ -38,10 +38,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter  {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/api/admins/**", "/api/v1/users-data/**", "/api/v1/dev/documents-data/create", "/api/users/**", "/api/v1/dev/notifications-data/**").hasRole("ADMIN")
+                .antMatchers("/api/admins/**", "/api/v1/users-data/**", "/api/v1/dev/documents-data/create", "/api/users/**", "/api/v1/dev/**").hasRole("ADMIN")
                 .antMatchers("/api/users/**", "/api/documents/**", "/api/notifications/**").hasRole("USER")
                 .antMatchers("**/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/swagger-ui/index.html").hasRole("ANONYMOUS")
-                .antMatchers("/api/auth/**", "/error").permitAll()
+                .antMatchers("/api/auth/**", "/error", "/api/v1/dev/**").permitAll()
                 .anyRequest().hasAnyRole("ADMIN", "USER")
                 .and()
                     .formLogin().loginPage("/auth/login")

@@ -1,7 +1,7 @@
 package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Role;
-import com.doklad.api.customers.repo.RoleRepo;
+import com.doklad.api.customers.repo.RoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,36 +14,36 @@ import java.util.Date;
 @Transactional(readOnly = true)
 public class RoleService {
 
-    private final RoleRepo roleRepo;
+    private final RoleRepository roleRepository;
 
     @Autowired
-    public RoleService(RoleRepo roleRepo) {
-        this.roleRepo = roleRepo;
+    public RoleService(RoleRepository roleRepository) {
+        this.roleRepository = roleRepository;
     }
 
     public List<Role> findAll() {
-        return roleRepo.findAll();
+        return roleRepository.findAll();
     }
 
     public Optional<Role> findById(Long id) {
-        return roleRepo.findById(id);
+        return roleRepository.findById(id);
     }
 
     @Transactional
     public Role save(Role role) {
         role.setCreatedAt(new Date());
         role.setUpdatedAt(new Date());
-        return roleRepo.save(role);
+        return roleRepository.save(role);
     }
 
     @Transactional
     public Role update(Role role) {
         role.setUpdatedAt(new Date());
-        return roleRepo.save(role);
+        return roleRepository.save(role);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        roleRepo.deleteById(id);
+        roleRepository.deleteById(id);
     }
 }

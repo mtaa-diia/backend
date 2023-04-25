@@ -4,14 +4,14 @@ import com.doklad.api.customers.utility.enums.RoleType;
 
 import java.util.Objects;
 
-public class RoleDto {
+public class RoleDTO {
     private Long id;
     private RoleType role;
 
-    public RoleDto() {
+    public RoleDTO() {
     }
 
-    public RoleDto(Long id, RoleType role) {
+    public RoleDTO(Long id, RoleType role) {
         this.id = id;
         this.role = role;
     }
@@ -28,7 +28,7 @@ public class RoleDto {
     public boolean equals(Object o) {
 
         if (this == o) return true;
-        if (!(o instanceof RoleDto roleDto)) return false;
+        if (!(o instanceof RoleDTO roleDto)) return false;
         return Objects.equals(id, roleDto.id) && role == roleDto.role;
     }
 

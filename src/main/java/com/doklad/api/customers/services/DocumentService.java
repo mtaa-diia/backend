@@ -2,7 +2,7 @@ package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.Status;
-import com.doklad.api.customers.repo.DocumentRepo;
+import com.doklad.api.customers.repo.DocumentRepository;
 import com.doklad.api.customers.utility.enums.StatusType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,19 +13,19 @@ import java.util.*;
 @Service
 @Transactional(readOnly = true)
 public class DocumentService {
-    private final DocumentRepo documentRepo;
+    private final DocumentRepository documentRepository;
 
     @Autowired
-    public DocumentService(DocumentRepo documentRepo) {
-        this.documentRepo = documentRepo;
+    public DocumentService(DocumentRepository documentRepository) {
+        this.documentRepository = documentRepository;
     }
 
     public List<Document> findAll() {
-        return documentRepo.findAll();
+        return documentRepository.findAll();
     }
 
     public Optional<Document> findById(Long id) {
-        return documentRepo.findById(id);
+        return documentRepository.findById(id);
     }
 
     @Transactional
@@ -33,22 +33,22 @@ public class DocumentService {
         document.setCreatedAt(new Date());
         document.setUpdatedAt(new Date());
         document.setStatus(new Status(StatusType.PENDING));
-        return documentRepo.save(document);
+        return documentRepository.save(document);
     }
 
     @Transactional
     public void update(Document document) {
         document.setUpdatedAt(new Date());
         document.setStatus(new Status(StatusType.PENDING));
-        documentRepo.save(document);
+        documentRepository.save(document);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        documentRepo.deleteById(id);
+        documentRepository.deleteById(id);
     }
 
     public Optional<Document> findByTitleAndContentAndDescription(String title, String content, String description) {
-        return documentRepo.findByTitleAndContentAndDescription(title, content, description);
+        return documentRepository.findByTitleAndContentAndDescription(title, content, description);
     }
 }

@@ -1,6 +1,6 @@
 package com.doklad.api.customers.controllers;
 
-import com.doklad.api.customers.dto.RoleDto;
+import com.doklad.api.customers.dto.RoleDTO;
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.services.RoleService;
 import com.doklad.api.customers.utility.exception.roleExceptions.RoleNotFoundException;
@@ -29,15 +29,15 @@ public class RoleController {
     }
 
     @GetMapping("/")
-    public ResponseEntity<List<RoleDto>> findAll() {
+    public ResponseEntity<List<RoleDTO>> findAll() {
         List<Role> roles = roleService.findAll();
-        List<RoleDto> roleDtos = roles.stream().map(this::convertToDto).collect(Collectors.toList());
+        List<RoleDTO> roleDTOS = roles.stream().map(this::convertToDto).collect(Collectors.toList());
 
-        return ResponseEntity.ok(roleDtos);
+        return ResponseEntity.ok(roleDTOS);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RoleDto> findById(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<RoleDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
         if (role.isEmpty())
@@ -47,16 +47,16 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> update(@PathVariable(name = "id") Long id) {
+    public ResponseEntity<RoleDTO> update(@PathVariable(name = "id") Long id) {
         Optional<Role> role = roleService.findById(id);
 
         if (role.isEmpty())
             throw new RoleNotFoundException("Role with id " + id.toString() + " was not found");
 
         Role updatedRole = role.get();
-        RoleDto updatedRoleDto = convertToDto(roleService.update(updatedRole));
+        RoleDTO updatedRoleDTO = convertToDto(roleService.update(updatedRole));
 
-        return ResponseEntity.ok(updatedRoleDto);
+        return ResponseEntity.ok(updatedRoleDTO);
     }
 
     @DeleteMapping("/{id}")
@@ -72,11 +72,11 @@ public class RoleController {
     }
 
 
-    private RoleDto convertToDto(Role role) {
-        return modelMapper.map(role, RoleDto.class);
+    private RoleDTO convertToDto(Role role) {
+        return modelMapper.map(role, RoleDTO.class);
     }
 
-    private Role convertToEntity(RoleDto roleDto) {
+    private Role convertToEntity(RoleDTO roleDto) {
         return modelMapper.map(roleDto, Role.class);
     }
 }

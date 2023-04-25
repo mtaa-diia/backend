@@ -1,6 +1,6 @@
 package com.doklad.api.customers.services;
 
-import com.doklad.api.customers.repo.ServiceRepo;
+import com.doklad.api.customers.repo.ServiceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,36 +13,36 @@ import java.util.Date;
 @Transactional(readOnly = true)
 public class ServiceService {
 
-    private final ServiceRepo serviceRepo;
+    private final ServiceRepository serviceRepository;
 
     @Autowired
-    public ServiceService(ServiceRepo serviceRepo) {
-        this.serviceRepo = serviceRepo;
+    public ServiceService(ServiceRepository serviceRepository) {
+        this.serviceRepository = serviceRepository;
     }
 
     public List<com.doklad.api.customers.models.Service> findAll() {
-        return serviceRepo.findAll();
+        return serviceRepository.findAll();
     }
 
     public Optional<com.doklad.api.customers.models.Service> findById(Long id) {
-        return serviceRepo.findById(id);
+        return serviceRepository.findById(id);
     }
 
     @Transactional
     public com.doklad.api.customers.models.Service save(com.doklad.api.customers.models.Service service) {
         service.setCreatedAt(new Date());
         service.setUpdatedAt(new Date());
-        return serviceRepo.save(service);
+        return serviceRepository.save(service);
     }
 
     @Transactional
     public com.doklad.api.customers.models.Service update(com.doklad.api.customers.models.Service service) {
         service.setUpdatedAt(new Date());
-        return serviceRepo.save(service);
+        return serviceRepository.save(service);
     }
 
     @Transactional
     public void deleteById(Long id) {
-        serviceRepo.deleteById(id);
+        serviceRepository.deleteById(id);
     }
 }

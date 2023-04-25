@@ -2,7 +2,7 @@ package com.doklad.api.customers.services;
 
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.models.User;
-import com.doklad.api.customers.repo.UserRepo;
+import com.doklad.api.customers.repo.UserRepository;
 import com.doklad.api.customers.utility.enums.RoleType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -17,12 +17,12 @@ import java.util.Date;
 @Transactional(readOnly = true)
 public class UserService {
 
-    private final UserRepo userRepository;
+    private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserService(UserRepo userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, RoleService roleService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
@@ -49,9 +49,11 @@ public class UserService {
 
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
-        user.setRole(new Role(RoleType.USER));
 
-
+        Role role = new Role(RoleType.USER);
+        roleService.save(role);
+        user.setRole(role);
+        String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

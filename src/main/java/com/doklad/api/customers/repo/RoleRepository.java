@@ -1,9 +1,9 @@
 package com.doklad.api.customers.repo;
 
-import com.doklad.api.customers.models.Service;
+import com.doklad.api.customers.models.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface ServiceRepo extends JpaRepository<Service, Long> {
+public interface RoleRepository extends JpaRepository<Role, Long> {
 }

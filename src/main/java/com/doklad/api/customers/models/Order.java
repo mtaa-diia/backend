@@ -47,14 +47,10 @@ public class Order {
     public Order() {
     }
 
-    public Order(String title, String description, User user, Status status, User staffProcessedOrder, Date createdAt, Date updatedAt) {
+    public Order(String title, String description, Status status) {
         this.title = title;
         this.description = description;
-        this.user = user;
         this.status = status;
-        this.staffProcessedOrder = staffProcessedOrder;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
