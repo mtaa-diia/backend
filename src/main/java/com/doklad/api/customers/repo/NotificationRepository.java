@@ -13,6 +13,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     Optional<Notification> findById(Long id);
     Notification save(Notification notification);
 
-    @Query("SELECT n FROM User u JOIN u.notifications n WHERE u.id = :userId")
-    Optional<Notification> findNotificationByUserId(@Param("userId") Long id);
+    @Query("SELECT n FROM User u JOIN u.notifications n WHERE n.id = :notificationId")
+    Optional<Notification> findNotificationByUserId(@Param("notificationId") Long id);
 }

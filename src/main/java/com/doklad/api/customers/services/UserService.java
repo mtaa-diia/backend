@@ -49,9 +49,11 @@ public class UserService {
 
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
-        user.setRole(new Role(RoleType.USER));
 
-
+        Role role = new Role(RoleType.USER);
+        roleService.save(role);
+        user.setRole(role);
+        String password = passwordEncoder.encode(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }

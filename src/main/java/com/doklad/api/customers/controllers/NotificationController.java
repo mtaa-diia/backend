@@ -52,14 +52,16 @@ public class NotificationController {
     @PutMapping("/")
     public ResponseEntity<NotificationDTO> update(@RequestBody NotificationDTO notificationDTO) {
 
-        Optional<Notification> notification = notificationService.findNotificationByUserId(notificationDTO.getUserId());
+        Optional<Notification> notification = notificationService.findNotificationByUserId(notificationDTO.getNotificationId());
         Notification updatedNotification;
         NotificationDTO updatedNotificationDTO;
 
         if (notification.isEmpty())
-            throw new NotificationNotFoundException("Notification with id " + notificationDTO.getId().toString() + " was not found");
+            throw new NotificationNotFoundException("Notification with id " + notificationDTO.getNotificationId().toString() + " was not found");
 
-        updatedNotification = notificationService.update(notificationMapper.convertToEntity(notificationDTO));
+        updatedNotification = notificationMapper.convertToEntity(notificationDTO);
+
+        notificationService.update(updatedNotification);
         updatedNotificationDTO = notificationMapper.convertToDto(updatedNotification);
 
         return ResponseEntity.ok(updatedNotificationDTO);
@@ -72,7 +74,7 @@ public class NotificationController {
         if (notification.isEmpty())
             throw new NotificationNotFoundException("Notification with id " + id.toString() + " was not found");
 
-        notificationService.deleteById(notification.get().getId());
+        notificationService.deleteById(notification.get().getNotificationId());
 
         return ResponseEntity.ok(HttpStatus.OK);
     }

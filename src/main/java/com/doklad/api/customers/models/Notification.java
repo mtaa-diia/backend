@@ -14,7 +14,7 @@ public class Notification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long id;
+    private Long notificationId;
 
     @Column(name = "title")
     @NotEmpty(message = "Title is required")
@@ -52,8 +52,8 @@ public class Notification {
 
     }
 
-    public Long getId() {
-        return id;
+    public Long getNotificationId() {
+        return notificationId;
     }
 
 
@@ -109,23 +109,29 @@ public class Notification {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Notification that)) return false;
-        return Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(message, that.message) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(readAt, that.readAt);
+        return Objects.equals(notificationId, that.notificationId) && Objects.equals(title, that.title) && Objects.equals(message, that.message) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(readAt, that.readAt);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, message, createdAt, updatedAt, readAt);
+        return Objects.hash(notificationId, title, message, createdAt, updatedAt, readAt);
     }
 
     @Override
     public String toString() {
         return "Notification{" +
-                "id=" + id +
+                "notificationId=" + notificationId +
                 ", title='" + title + '\'' +
                 ", message='" + message + '\'' +
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 ", readAt=" + readAt +
+                ", user=" + user +
                 '}';
+    }
+
+
+    public void setNotificationId(Long notificationId) {
+        this.notificationId = notificationId;
     }
 }

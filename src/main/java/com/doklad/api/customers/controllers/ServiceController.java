@@ -48,30 +48,6 @@ public class ServiceController {
         return service.map(value -> ResponseEntity.ok(convertToDto(value))).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ServiceDto> update(@PathVariable(name = "id") Long id) {
-        Optional<Service> service = serviceService.findById(id);
-
-        if (service.isEmpty())
-            throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
-
-        Service updatedService = service.get();
-        ServiceDto updatedServiceDto = convertToDto(serviceService.update(updatedService));
-
-        return ResponseEntity.ok(updatedServiceDto);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> delete(@PathVariable(name = "id") Long id) {
-        Optional<Service> service = serviceService.findById(id);
-
-        if (service.isEmpty())
-            throw new ServiceNotFoundException("Service with id " + id.toString() + " was not found");
-
-        serviceService.deleteById(service.get().getId());
-
-        return ResponseEntity.ok(HttpStatus.OK);
-    }
 
     private ServiceDto convertToDto(Service service) {
         return modelMapper.map(service, ServiceDto.class);

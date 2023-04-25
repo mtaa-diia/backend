@@ -1,106 +1,120 @@
 package com.doklad.api.customers.dto;
 
+import com.doklad.api.customers.models.Notification;
+import com.doklad.api.customers.models.User;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.util.Date;
 import java.util.Objects;
 
 public class NotificationDTO {
 
-    private Long id;
+    private Long notificationId;
+
     private String title;
+
     private String message;
 
-    private long userId;
-    private String createdAt;
-    private String updatedAt;
-    private String read_at;
+    private Date createdAt;
+
+
+    private Date updatedAt;
+
+    private Date readAt;
+
+    private Long userId;
+
 
     public NotificationDTO() {
     }
 
-    public NotificationDTO(Long id, String title, String message, long userId) {
-        this.id = id;
+    public NotificationDTO(String title, String message) {
         this.title = title;
         this.message = message;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-        this.userId = userId;
+
     }
+
+    public Long getNotificationId() {
+        return notificationId;
+    }
+
 
     public String getTitle() {
         return title;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-
-    public String getCreatedAt() {
-        return createdAt;
     }
 
     public void setTitle(String title) {
         this.title = title;
     }
 
+    public String getMessage() {
+        return message;
+    }
+
     public void setMessage(String message) {
         this.message = message;
     }
 
-    public Long getId() {
-        return id;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-
-    public void setCreatedAt(String createdAt) {
+    public void setCreatedAt(Date createdAt) {
         this.createdAt = createdAt;
     }
 
-    public void setUpdatedAt(String updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
-    public String getUpdatedAt() {
+    public Date getUpdatedAt() {
         return updatedAt;
     }
 
-    public long getUserId() {
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getReadAt() {
+        return readAt;
+    }
+
+    public void setReadAt(Date readAt) {
+        this.readAt = readAt;
+    }
+
+    public void setNotificationId(Long notificationId) {
+        this.notificationId = notificationId;
+    }
+
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(long userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
-    }
-
-    public String getRead_at() {
-        return read_at;
-    }
-
-    public void setRead_at(String read_at) {
-        this.read_at = read_at;
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof NotificationDTO that)) return false;
-        return userId == that.userId && Objects.equals(id, that.id) && Objects.equals(title, that.title) && Objects.equals(message, that.message) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(read_at, that.read_at);
+        return Objects.equals(notificationId, that.notificationId) && Objects.equals(title, that.title) && Objects.equals(message, that.message) && Objects.equals(createdAt, that.createdAt) && Objects.equals(updatedAt, that.updatedAt) && Objects.equals(readAt, that.readAt) && Objects.equals(userId, that.userId);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, title, message, userId, createdAt, updatedAt, read_at);
+        return Objects.hash(notificationId, title, message, createdAt, updatedAt, readAt, userId);
     }
 
     @Override
     public String toString() {
         return "NotificationDTO{" +
-                "id=" + id +
+                "notificationId=" + notificationId +
                 ", title='" + title + '\'' +
                 ", message='" + message + '\'' +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                ", readAt=" + readAt +
                 ", userId=" + userId +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", read_at='" + read_at + '\'' +
                 '}';
     }
 }

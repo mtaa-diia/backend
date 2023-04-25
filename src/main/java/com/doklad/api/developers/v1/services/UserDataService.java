@@ -7,6 +7,7 @@ import com.doklad.api.customers.services.RoleService;
 import com.doklad.api.customers.utility.enums.RoleType;
 import com.github.javafaker.Faker;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,12 +21,14 @@ public class UserDataService {
     private final Faker faker;
     private final RoleService roleService;
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserDataService(Faker faker, RoleService roleService, UserRepository userRepository) {
+    public UserDataService(Faker faker, RoleService roleService, UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.faker = faker;
         this.roleService = roleService;
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional
@@ -56,7 +59,7 @@ public class UserDataService {
             user.setLastName(lastName);
             user.setUsername(firstName + lastName);
             user.setEmail(email);
-            user.setPassword("test123");
+            user.setPassword(password);
 
             // Create role
             Role role = new Role(RoleType.USER);
@@ -65,7 +68,6 @@ public class UserDataService {
             user.setRole(role);
             users.add(user);
         });
-
 
         return users;
     }
@@ -78,6 +80,7 @@ public class UserDataService {
     public User save(User user) {
         user.setCreatedAt(new Date());
         user.setUpdatedAt(new Date());
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         return userRepository.save(user);
     }
 

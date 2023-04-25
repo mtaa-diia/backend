@@ -20,8 +20,12 @@ public class NotificationMapper {
         return modelMapper.map(notification, NotificationDTO.class);
     }
 
+
+
     public Notification convertToEntity(NotificationDTO notificationDTO) {
-        return modelMapper.map(notificationDTO, Notification.class);
+        Notification notification = modelMapper.map(notificationDTO, Notification.class);
+        notification.setNotificationId(notificationDTO.getNotificationId());
+        return notification;
     }
 
 }
