@@ -1,39 +1,59 @@
 package com.doklad.api.customers.dto;
 
+import com.doklad.api.customers.models.Status;
+import com.doklad.api.customers.models.User;
+import com.doklad.api.customers.utility.enums.StatusType;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+import java.util.Date;
+import java.util.Objects;
+
 public class OrderDTO {
-    private String name;
+
+    private Long id;
+
+    private String title;
+
     private String description;
-    private String price;
-    private String status;
-    private String service;
-    private String customer;
-    private String employee;
-    private String date;
-    private String time;
-    private String duration;
-    private String note;
 
-    public OrderDTO(String name, String description, String price, String status, String service, String customer,
-                    String employee, String date, String time, String duration, String note) {
-        this.name = name;
+    private Long userId;
+
+
+    private StatusType status;
+
+    private Long staffProcessedOrderId;
+
+
+    private Date createdAt;
+
+    private Date updatedAt;
+
+
+    public OrderDTO() {
+    }
+
+    public OrderDTO(String title, String description, StatusType status) {
+        this.title = title;
         this.description = description;
-        this.price = price;
         this.status = status;
-        this.service = service;
-        this.customer = customer;
-        this.employee = employee;
-        this.date = date;
-        this.time = time;
-        this.duration = duration;
-        this.note = note;
     }
 
-    public String getName() {
-        return name;
+    public Long getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {
@@ -44,75 +64,69 @@ public class OrderDTO {
         this.description = description;
     }
 
-    public String getPrice() {
-        return price;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
-    public String getStatus() {
+    public StatusType getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusType status) {
         this.status = status;
     }
 
-    public String getService() {
-        return service;
+    public Long getStaffProcessedOrderId() {
+        return staffProcessedOrderId;
     }
 
-    public void setService(String service) {
-        this.service = service;
+    public void setStaffProcessedOrderId(Long staffProcessedOrderId) {
+        this.staffProcessedOrderId = staffProcessedOrderId;
     }
 
-    public String getCustomer() {
-        return customer;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setCustomer(String customer) {
-        this.customer = customer;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public String getEmployee() {
-        return employee;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setEmployee(String employee) {
-        this.employee = employee;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
-    public String getDate() {
-        return date;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrderDTO orderDTO)) return false;
+        return Objects.equals(id, orderDTO.id) && Objects.equals(title, orderDTO.title) && Objects.equals(description, orderDTO.description) && Objects.equals(userId, orderDTO.userId) && status == orderDTO.status && Objects.equals(staffProcessedOrderId, orderDTO.staffProcessedOrderId) && Objects.equals(createdAt, orderDTO.createdAt) && Objects.equals(updatedAt, orderDTO.updatedAt);
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, title, description, userId, status, staffProcessedOrderId, createdAt, updatedAt);
     }
 
-    public String getTime() {
-        return time;
-    }
-
-    public void setTime(String time) {
-        this.time = time;
-    }
-
-    public String getDuration() {
-        return duration;
-    }
-
-    public void setDuration(String duration) {
-        this.duration = duration;
-    }
-
-    public String getNote() {
-        return note;
-    }
-
-    public void setNote(String note) {
-        this.note = note;
+    @Override
+    public String toString() {
+        return "OrderDTO{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description='" + description + '\'' +
+                ", userId=" + userId +
+                ", status=" + status +
+                ", staffProcessedOrderId=" + staffProcessedOrderId +
+                ", createdAt=" + createdAt +
+                ", updatedAt=" + updatedAt +
+                '}';
     }
 }

@@ -1,5 +1,6 @@
 package com.doklad.api.developers.v1.controllers;
 
+import com.doklad.api.customers.dto.OrderDTO;
 import com.doklad.api.customers.mappers.OrderMapper;
 import com.doklad.api.customers.models.Order;
 import com.doklad.api.developers.v1.services.UserDataService;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.doklad.api.developers.v1.services.OrderDataService;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,10 +32,17 @@ public class OrderDataController {
     }
 
     @GetMapping("/create")
-    public ResponseEntity<List<Order>> createOrders(@RequestParam(name = "count", defaultValue = "1") int count) {
+    public ResponseEntity<List<OrderDTO>> createOrders(@RequestParam(name = "count", defaultValue = "1") int count) {
         List<Order> orders = orderDataService.generateOrders(count);
+        List<OrderDTO> orderDTOS = new ArrayList<>();
 
-        return ResponseEntity.ok(orders);
+        if (orders.isEmpty())
+            return ResponseEntity.noContent().build();
+
+        orders.forEach(this.orderDataService::save);
+        orderDTOS = orders.stream().map(this.orderMapper::convertToDto).toList();
+
+        return ResponseEntity.ok(orderDTOS);
     }
 
 }

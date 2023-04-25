@@ -4,6 +4,7 @@ import com.doklad.api.customers.models.Order;
 import com.doklad.api.customers.models.Status;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.repo.OrderRepository;
+import com.doklad.api.customers.services.StatusService;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.enums.StatusType;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
@@ -24,13 +25,15 @@ public class OrderDataService {
 
     private final OrderRepository orderRepository;
     private final UserDataService userDataService;
+    private final StatusService statusService;
     private final Faker faker;
 
     @Autowired
-    public OrderDataService(OrderRepository orderRepository, UserDataService userDataService, Faker faker) {
+    public OrderDataService(OrderRepository orderRepository, UserDataService userDataService, Faker faker, StatusService statusService) {
         this.orderRepository = orderRepository;
         this.userDataService = userDataService;
         this.faker = faker;
+        this.statusService = statusService;
     }
 
     public List<Order> generateOrders(int count) {
@@ -50,7 +53,7 @@ public class OrderDataService {
             orders.add(order);
         });
 
-        return orderRepository.findAll();
+        return orders;
     }
 
     public List<Order> findAll() {
@@ -65,6 +68,7 @@ public class OrderDataService {
     public Order save(Order order) {
         order.setUpdatedAt(new Date());
         order.setCreatedAt(new Date());
+        statusService.save(order.getStatus());
 
         return orderRepository.save(order);
     }
