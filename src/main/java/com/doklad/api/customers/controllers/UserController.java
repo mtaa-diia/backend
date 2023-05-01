@@ -47,7 +47,7 @@ public class UserController {
     }
 
 
-    @GetMapping("/{id}/id")
+    @GetMapping("/{id}")
     public ResponseEntity<UserDTO> findById(@PathVariable(name = "id") Long id) {
         Optional<User> user = userService.findById(id);
 
@@ -61,7 +61,7 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping("/{username}/username")
+    @GetMapping("/{username}")
     public ResponseEntity<UserDTO> findByUsername(@PathVariable(name = "username") String username) {
         Optional<User> user = userService.findByUsername(username);
 
