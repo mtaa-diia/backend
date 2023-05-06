@@ -41,7 +41,7 @@ public class UserDataService {
             String firstName = faker.name().firstName();
             String lastName = faker.name().lastName();
             String email = faker.internet().emailAddress();
-            String password = faker.internet().password();
+            String password;
 
             while (firstName.length() >= 255 || firstName.length() <= 3)
                 firstName = faker.name().firstName();
@@ -52,8 +52,8 @@ public class UserDataService {
             while (email.length() >= 255 || email.length() <= 3)
                 email = faker.internet().emailAddress();
 
-            while (password.length() >= 255 || password.length() <= 3)
-                password = "test123";
+//            while (password.length() >= 255 || password.length() <= 3)
+            password = "test123";
 
             user.setFirstName(firstName);
             user.setLastName(lastName);
