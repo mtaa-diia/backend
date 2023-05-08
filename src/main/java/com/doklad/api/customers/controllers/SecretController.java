@@ -44,11 +44,11 @@ public class SecretController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<SecretDTO> generateSecret(@RequestBody Long documentId) {
+    public ResponseEntity<SecretDTO> generateSecret(@RequestParam(name = "id") long documentId) {
         Optional<Document> document = documentService.findById(documentId);
 
         if (document.isEmpty())
-            throw new DocumentNotFoundException("Document with id " + documentId.toString() + " was not found");
+            throw new DocumentNotFoundException("Document with id " + documentId + " was not found");
 
         Secret secret = new Secret();
         secret.setDocument(document.get());
@@ -63,6 +63,10 @@ public class SecretController {
     }
 
     private SecretDTO convertToDto(Secret secret) {
-        return modelMapper.map(secret, SecretDTO.class);
+        SecretDTO dto = new SecretDTO();
+        dto.setValue(secret.getValue());
+        dto.setDocumentId(secret.getDocument().getId());
+        dto.setExpiresAt(secret.getExpiresAt().toString());
+        return dto;
     }
 }

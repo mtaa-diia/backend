@@ -9,13 +9,10 @@ import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.enums.RoleType;
-import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserAlreadyExistException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import com.doklad.api.customers.utility.exception.userExceptions.UsersNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -24,8 +21,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
-
-import static java.util.stream.Collectors.toList;
 
 
 @RestController
@@ -126,10 +121,6 @@ public class UserController {
 
         List<Document> documents = userService.findAllDocumentsByUserId(authUser.get().getId());
 
-        if (documents.isEmpty())
-            throw new DocumentNotFoundException("No documents were found");
-
-
         return documents.stream().map(this.documentMapper::convertToDto).toList();
     }
 
@@ -141,9 +132,6 @@ public class UserController {
             throw new UserNotFoundException("User with id " + userId + " was not found");
 
         List<Document> documents = userService.findAllDocumentsByUserId(user.get().getId());
-
-        if (documents.isEmpty())
-            throw new DocumentNotFoundException("No documents were found");
 
         return documents.stream().map(this.documentMapper::convertToDto).toList();
     }
