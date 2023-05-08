@@ -19,6 +19,8 @@ public class UserMapper {
     }
 
     public UserDTO convertUserToUserDTO(User user) {
+        UserDTO userDTO = modelMapper.map(user, UserDTO.class);
+        userDTO.setId(user.getId());
         return modelMapper.map(user, UserDTO.class);
     }
 
