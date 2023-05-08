@@ -133,6 +133,7 @@ public class UserController {
         return documents.stream().map(this.documentMapper::convertToDto).toList();
     }
 
+    @PreAuthorize("hasRole('STAFF')")
     @GetMapping("/documents/{userId}")
     public List<DocumentDTO> findAllUserDocuments(@PathVariable(name = "userId") Long userId) {
         Optional<User> user = this.userService.findById(userId);
