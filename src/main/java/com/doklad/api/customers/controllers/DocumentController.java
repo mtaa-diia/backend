@@ -63,7 +63,7 @@ public class DocumentController {
 
     @PostMapping("/")
     public ResponseEntity<DocumentDTO> save(@RequestBody DocumentDTO documentDTO) {
-        long userId = documentDTO.getUser().getId();
+        long userId = documentDTO.getId();
         Optional<User> user = userService.findById(userId);
         Optional<Document> document = documentService.findByTitleAndContentAndDescription(documentDTO.getTitle(), documentDTO.getContent(), documentDTO.getDescription());
         Document newDocument = new Document();
@@ -89,10 +89,10 @@ public class DocumentController {
         long id = documentDTO.getId();
         Optional<Document> document = documentService.findById(id);
         Document updatedDocument = documentMapper.convertToEntity(documentDTO);
-        Optional<User> user = userService.findById(documentDTO.getUser().getId());
+        Optional<User> user = userService.findById(documentDTO.getId());
 
         if (user.isEmpty())
-            throw new UserNotFoundException("User with id " + documentDTO.getUser().getId().toString() + " was not found");
+            throw new UserNotFoundException("User with id " + documentDTO.getId().toString() + " was not found");
 
         if (document.isEmpty())
             throw new DocumentNotFoundException("Document with id " + id + " was not found");
