@@ -1,10 +1,15 @@
 package com.doklad.api.customers.controllers;
 
+import com.doklad.api.customers.dto.DocumentDTO;
 import com.doklad.api.customers.dto.UserDTO;
+import com.doklad.api.customers.mappers.DocumentMapper;
 import com.doklad.api.customers.mappers.UserMapper;
+import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.User;
+import com.doklad.api.customers.services.DocumentService;
 import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.enums.RoleType;
+import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserAlreadyExistException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
 import com.doklad.api.customers.utility.exception.userExceptions.UsersNotFoundException;
@@ -13,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,11 +33,13 @@ import static java.util.stream.Collectors.toList;
 public class UserController {
     private final UserService userService;
     private final UserMapper userMapper;
+    private DocumentMapper documentMapper;
 
     @Autowired
-    public UserController(UserService userService, UserMapper userMapper) {
+    public UserController(UserService userService, UserMapper userMapper, DocumentService documentService, DocumentMapper documentMapper) {
         this.userService = userService;
         this.userMapper = userMapper;
+        this.documentMapper = documentMapper;
     }
 
 
@@ -106,6 +115,39 @@ public class UserController {
         return ResponseEntity.ok(updateUserDTO);
 
     }
+
+    @GetMapping("/documents/")
+    public List<DocumentDTO> findAllUserDocuments() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        Optional<User> authUser = this.userService.findByUsername(username);
+        if (authUser.isEmpty())
+            throw new UserNotFoundException("User with username " + username + " was not found");
+
+        List<Document> documents = userService.findAllDocumentsByUserId(authUser.get().getId());
+
+        if (documents.isEmpty())
+            throw new DocumentNotFoundException("No documents were found");
+
+
+        return documents.stream().map(this.documentMapper::convertToDto).toList();
+    }
+
+    @GetMapping("/documents/{userId}")
+    public List<DocumentDTO> findAllUserDocuments(@PathVariable(name = "userId") Long userId) {
+        Optional<User> user = this.userService.findById(userId);
+        if (user.isEmpty())
+            throw new UserNotFoundException("User with id " + userId + " was not found");
+
+        List<Document> documents = userService.findAllDocumentsByUserId(user.get().getId());
+
+        if (documents.isEmpty())
+            throw new DocumentNotFoundException("No documents were found");
+
+        return documents.stream().map(this.documentMapper::convertToDto).toList();
+    }
+
+
 
     // Write exception handler for delete method
     @DeleteMapping("/{id}")

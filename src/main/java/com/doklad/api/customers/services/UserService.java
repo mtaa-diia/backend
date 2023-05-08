@@ -1,5 +1,6 @@
 package com.doklad.api.customers.services;
 
+import com.doklad.api.customers.models.Document;
 import com.doklad.api.customers.models.Role;
 import com.doklad.api.customers.models.User;
 import com.doklad.api.customers.repo.UserRepository;
@@ -34,6 +35,10 @@ public class UserService {
             user.setRole(new Role(RoleType.USER));
         }
         return userRepository.findAll();
+    }
+
+    public List<Document> findAllDocumentsByUserId(Long id) {
+        return userRepository.findAllDocumentsByUserId(id);
     }
 
     public Optional<User> findById(Long id) {
