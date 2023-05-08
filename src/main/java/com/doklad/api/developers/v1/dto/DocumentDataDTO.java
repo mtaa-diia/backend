@@ -5,6 +5,8 @@ import com.doklad.api.customers.utility.enums.StatusType;
 import java.util.Objects;
 
 public class DocumentDataDTO {
+
+    private Long id;
     private String content;
     private String description;
     private String title;
@@ -15,12 +17,21 @@ public class DocumentDataDTO {
     public DocumentDataDTO() {
     }
 
-    public DocumentDataDTO(String content, String description, String title, UserDataDTOId user, StatusType status) {
+    public DocumentDataDTO(Long id, String content, String description, String title, UserDataDTOId user, StatusType status) {
+        this.id = id;
         this.content = content;
         this.description = description;
         this.title = title;
         this.user = user;
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getContent() {
@@ -67,21 +78,22 @@ public class DocumentDataDTO {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof DocumentDataDTO that)) return false;
-        return Objects.equals(content, that.content) && Objects.equals(description, that.description) && Objects.equals(title, that.title) && Objects.equals(user, that.user) && status == that.status;
+        return Objects.equals(id, that.id) && Objects.equals(content, that.content) && Objects.equals(description, that.description) && Objects.equals(title, that.title) && Objects.equals(user, that.user) && status == that.status;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(content, description, title, user, status);
+        return Objects.hash(id, content, description, title, user, status);
     }
 
     @Override
     public String toString() {
         return "DocumentDataDTO{" +
-                "content='" + content + '\'' +
+                "id=" + id +
+                ", content='" + content + '\'' +
                 ", description='" + description + '\'' +
                 ", title='" + title + '\'' +
-                ", user=" + user.getId() +
+                ", user=" + user +
                 ", status=" + status +
                 '}';
     }

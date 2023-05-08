@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Collectors;
 
 @RestController
@@ -38,7 +39,8 @@ public class DocumentDataController {
 
         List<DocumentDataDTO> documentDTOS = documents.stream().map(this::convertToDto).collect(Collectors.toList());
 
-        documents.forEach(this.documentDataService::save);
+        CopyOnWriteArrayList<Document> documentsCopy = new CopyOnWriteArrayList<>(documents);
+        documentsCopy.forEach(document -> documentService.save(document));
 
         return ResponseEntity.ok(documentDTOS);
     }
