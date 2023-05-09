@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.Optional;
 
 @RestController
@@ -33,12 +34,12 @@ public class SecretController {
         this.documentService = documentService;
     }
 
-    @GetMapping("/{value}")
-    public ResponseEntity<DocumentDTO> verify(@PathVariable(name = "value") String value) {
+    @GetMapping("/")
+    public ResponseEntity<DocumentDTO> verify(@RequestParam(name = "value") String value) {
         Optional<Secret> secret = secretService.findByValue(value);
 
         if(secret.isEmpty())
-            throw new SecretNotFoundException("Secret with the given value was not found");
+            return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(convertToDto(secret.get().getDocument()));
     }
