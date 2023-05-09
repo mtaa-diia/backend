@@ -9,7 +9,6 @@ import com.doklad.api.customers.services.UserService;
 import com.doklad.api.customers.utility.exception.documentExceptions.DocumentAlreadyExistException;
 import com.doklad.api.customers.utility.exception.documentExceptions.DocumentNotFoundException;
 import com.doklad.api.customers.utility.exception.userExceptions.UserNotFoundException;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -39,9 +38,6 @@ public class DocumentController {
     public ResponseEntity<List<DocumentDTO>> findAll() {
         List<Document> documents = documentService.findAll();
         List<DocumentDTO> documentDTOs = new ArrayList<>();
-
-        if (documents.isEmpty())
-            throw new DocumentNotFoundException("No documents were found");
 
         documentDTOs = documents.stream().map(this.documentMapper::convertToDto).collect(Collectors.toList());
 

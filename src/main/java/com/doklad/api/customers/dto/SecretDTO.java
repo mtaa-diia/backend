@@ -2,16 +2,15 @@ package com.doklad.api.customers.dto;
 
 public class SecretDTO {
     private String value;
-    private Long document;
+    private Long documentId;
     private String expiresAt;
 
     public SecretDTO() {
-
     }
 
-    public SecretDTO(String value, Long document, String expiresAt) {
+    public SecretDTO(String value, Long documentId, String expiresAt) {
         this.value = value;
-        this.document = document;
+        this.documentId = documentId;
         this.expiresAt = expiresAt;
     }
 
@@ -19,8 +18,8 @@ public class SecretDTO {
         return value;
     }
 
-    public Long getDocument() {
-        return document;
+    public Long getDocumentId() {
+        return documentId;
     }
 
     public String getExpiresAt() {
@@ -31,8 +30,8 @@ public class SecretDTO {
         this.value = value;
     }
 
-    public void setDocument(Long document) {
-        this.document = document;
+    public void setDocumentId(Long documentId) {
+        this.documentId = documentId;
     }
 
     public void setExpiresAt(String expiresAt) {
