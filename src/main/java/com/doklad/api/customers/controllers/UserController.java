@@ -70,7 +70,7 @@ public class UserController {
         return ResponseEntity.ok(userDTO);
     }
 
-    @GetMapping("/{username}")
+    @GetMapping("/username/{username}")
     public ResponseEntity<UserDTO> findByUsername(@PathVariable(name = "username") String username) {
         Optional<User> user = userService.findByUsername(username);
 
