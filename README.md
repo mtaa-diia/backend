@@ -58,6 +58,9 @@ It is using PostgreSQL database.
 > 5.1.4 ```PUT /{id}``` is update user and return with 200 HTTP Status code <br/>
 > 5.1.5 ```DELETE /{id}``` is delete user with 200 HTTP Status code <br/>
 > 5.1.6 ```GET /{username}``` is return user by username with 200 HTTP Status code <br/>
+> 5.1.7 ```GET /username/{username}``` is return user by username with 200 HTTP Status code <br/>
+> 5.1.8 ```GET /documents/{id}``` is return list of documents by user id with 200 HTTP Status code <br/>
+> 5.1.9 ```GET /documents/``` is return of documents by authenticated user with 200 HTTP Status code <br/>
 
 ## 5.2 Document Endpoints ```/api/documents```
 > 5.2.1 ```GET /``` is return list of documents with 200 HTTP Status code <br/>
@@ -79,6 +82,7 @@ It is using PostgreSQL database.
 > 5.4.3 ```POST /``` is create and return order with 200 HTTP Status code <br/>
 > 5.4.4 ```PUT /{id}``` is update order and return with 200 HTTP Status code <br/>
 > 5.4.5 ```DELETE /{id}``` is delete order with 200 HTTP Status code <br/>
+
 
 ## 5.5 StatusController Endpoints ```/api/status```
 > 5.5.1 ```GET /``` is return list of statuses with 200 HTTP Status code <br/>
